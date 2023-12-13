@@ -6,16 +6,36 @@ export default class ProductManager {
     this.fileName = fileName;
   }
 
-  static #configFile = `${this.filePath}/config.json`;
-
   async #getLastId() {
     try {
-      const configFile = await fs.promises.readFile(ProductManager.#configFile, "utf-8");
+      const configFile = await fs.promises.readFile(`${this.filePath}/config.json`, "utf-8");
       const configFileObj = JSON.parse(configFile);
-      return configFileObj.lastId;
+
+      return configFileObj.lastProductId ?? 0;
     } catch (error) {
       console.error(`Error getLastId(): ${error}`);
       return 0;
+    }
+  }
+
+  async #updateLastId(id) {
+    try {
+      const configFile = await fs.promises.readFile(`${this.filePath}/config.json`, "utf-8");
+      const configFileObj = JSON.parse(configFile);
+      const updateConfigFileObj = { ...configFileObj, lastProductId: id };
+
+      await fs.promises.writeFile(
+        `${this.filePath}/config.json`,
+        JSON.stringify(updateConfigFileObj),
+        "utf-8"
+      );
+    } catch (error) {
+      console.error(`Error updateLastId(): ${error}`);
+      await fs.promises.writeFile(
+        `${this.filePath}/config.json`,
+        JSON.stringify({ lastProductId: id }),
+        "utf-8"
+      );
     }
   }
 
@@ -43,7 +63,7 @@ export default class ProductManager {
       return product;
     } catch (error) {
       console.error(`Error getProductById(): ${error}`);
-      return { error: error };
+      return undefined;
     }
   }
 
@@ -72,6 +92,8 @@ export default class ProductManager {
       let lastId = await this.#getLastId();
       lastId++;
 
+      await this.#updateLastId(lastId);
+
       const newProduct = {
         id: lastId,
         title,
@@ -87,14 +109,6 @@ export default class ProductManager {
       const products = await this.getProducts();
       products.push(newProduct);
 
-      const updateConfigFileObj = { lastId };
-
-      await fs.promises.writeFile(
-        ProductManager.#configFile,
-        JSON.stringify(updateConfigFileObj),
-        "utf-8"
-      );
-
       await fs.promises.writeFile(
         `${this.filePath}/${this.fileName}`,
         JSON.stringify(products),
@@ -103,10 +117,10 @@ export default class ProductManager {
 
       console.log(`Success: Code "${newProduct.code}" added`);
 
-      return newProduct;
+      return { status: "success", payload: newProduct };
     } catch (error) {
       console.error(`Error addProduct(): ${error}`);
-      return error;
+      return { status: "error", error: error };
     }
   }
 
@@ -152,10 +166,10 @@ export default class ProductManager {
 
       console.log(`Success: Product ID "${product.id}" updated`);
 
-      return product;
+      return { status: "success", payload: product };
     } catch (error) {
       console.error(`Error updateProduct(): ${error}`);
-      return error;
+      return { status: "error", error: error };
     }
   }
 
@@ -174,10 +188,10 @@ export default class ProductManager {
       );
 
       console.log(`Success: Product ID "${id}" deleted`);
-      return product;
+      return { status: "success", payload: product };
     } catch (error) {
       console.error(`Error deleteProduct(): ${error}`);
-      return error;
+      return { status: "error", error: error };
     }
   }
 }
