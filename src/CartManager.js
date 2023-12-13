@@ -105,11 +105,10 @@ export default class CartManager {
       if (!cart) throw `Cart Id '${cid}' Not found`;
 
       const products = cart.products;
-      const product = products.find((p) => p.pid === pid);
+      const product = products.find((p) => p.id === pid);
 
       if (!product) {
-        const addProduct = { pid, qty };
-        cart.products.push(addProduct);
+        cart.products.push({ id: pid, quantity: qty });
       } else {
         product.quantity += qty;
       }
