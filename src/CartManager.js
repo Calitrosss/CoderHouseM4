@@ -10,6 +10,7 @@ export default class CartManager {
     try {
       const configFile = await fs.promises.readFile(`${this.filePath}/config.json`, "utf-8");
       const configFileObj = JSON.parse(configFile);
+
       return configFileObj.lastCartId ?? 0;
     } catch (error) {
       console.error(`Error getLastId(): ${error}`);
