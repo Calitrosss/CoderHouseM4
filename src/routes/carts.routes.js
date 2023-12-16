@@ -7,9 +7,9 @@ const cartsRoutes = Router();
 
 cartsRoutes.get("/", async (req, res) => {
   try {
-    const products = await cartMng.getCarts();
+    const carts = await cartMng.getCarts();
 
-    res.send({ status: "success", payload: products });
+    res.send({ status: "success", payload: carts });
   } catch (error) {
     res.status(400).send({ status: "error", error: error });
   }
