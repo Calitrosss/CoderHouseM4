@@ -39,7 +39,7 @@ export default class CartManager {
     }
   }
 
-  async #getCarts() {
+  async getCarts() {
     try {
       const cartsDb = await fs.promises.readFile(`${this.filePath}/${this.fileName}`, "utf-8");
       const cartsDbObj = JSON.parse(cartsDb);
@@ -53,7 +53,7 @@ export default class CartManager {
 
   async getProductsByCartId(id) {
     try {
-      const carts = await this.#getCarts();
+      const carts = await this.getCarts();
 
       const cart = carts.find((c) => c.id === id);
 
@@ -78,7 +78,7 @@ export default class CartManager {
         products: [],
       };
 
-      const carts = await this.#getCarts();
+      const carts = await this.getCarts();
       carts.push(newCart);
 
       await fs.promises.writeFile(
@@ -98,7 +98,7 @@ export default class CartManager {
 
   async addProductToCart(cid, pid, quantity) {
     try {
-      const carts = await this.#getCarts();
+      const carts = await this.getCarts();
 
       const qty = quantity || 1;
 

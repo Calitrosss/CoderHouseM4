@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.send("Final Proyect - 1st. Pre-delivery");
+  res.send("<h1>Final Proyect - 1st. Pre-delivery</h1>");
 });
 
 app.use("/api/products", productsRoutes);

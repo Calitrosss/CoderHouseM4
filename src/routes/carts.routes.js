@@ -5,6 +5,16 @@ const cartMng = new CartManager("./src", "cartsDb.json");
 
 const cartsRoutes = Router();
 
+cartsRoutes.get("/", async (req, res) => {
+  try {
+    const products = await cartMng.getCarts();
+
+    res.send({ status: "success", payload: products });
+  } catch (error) {
+    res.status(400).send({ status: "error", error: error });
+  }
+});
+
 cartsRoutes.get("/:cid", async (req, res) => {
   try {
     const id = req.params.cid;
