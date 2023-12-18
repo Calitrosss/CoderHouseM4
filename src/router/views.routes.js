@@ -11,4 +11,8 @@ viewsRoutes.get("/", async (req, res) => {
   res.render("home", { title: "Home (Products)", products });
 });
 
+viewsRoutes.get("/realTimeProducts", async (req, res) => {
+  res.render("realTimeProducts", { title: "Real Time Products" });
+});
+
 export default viewsRoutes;
