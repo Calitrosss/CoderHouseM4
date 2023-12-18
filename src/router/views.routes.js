@@ -7,7 +7,6 @@ const viewsRoutes = Router();
 
 viewsRoutes.get("/", async (req, res) => {
   const products = await productMng.getProducts();
-
   res.render("home", { title: "Home (Products)", products });
 });
 
