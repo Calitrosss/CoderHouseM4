@@ -42,10 +42,12 @@ productsRoutes.post("/", async (req, res) => {
     res.send(result);
   } catch (error) {
     res.status(400).send({ status: "error", error: error });
+  } finally {
+    req.app.io.emit("products", await productMng.getProducts());
   }
 });
 
-productsRoutes.put("/:pid", async (req, res) => {
+productsRoutes.put("/:pid", async (req, res, next) => {
   try {
     const id = parseInt(req.params.pid);
 
@@ -57,6 +59,8 @@ productsRoutes.put("/:pid", async (req, res) => {
     res.send(result);
   } catch (error) {
     res.status(400).send({ status: "error", error: error });
+  } finally {
+    req.app.io.emit("products", await productMng.getProducts());
   }
 });
 
@@ -72,6 +76,8 @@ productsRoutes.delete("/:pid", async (req, res) => {
     res.send(result);
   } catch (error) {
     res.status(400).send({ status: "error", error: error });
+  } finally {
+    req.app.io.emit("products", await productMng.getProducts());
   }
 });
 

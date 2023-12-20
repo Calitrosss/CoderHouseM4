@@ -38,3 +38,7 @@ delButton.addEventListener("click", () => {
   const id = +productIdToDelete.value;
   socket.emit("delProduct", id);
 });
+
+socket.on("test", (data) => {
+  console.log(data);
+});

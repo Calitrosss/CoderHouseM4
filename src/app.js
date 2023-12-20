@@ -32,8 +32,10 @@ const httpServer = app.listen(PORT, async () => {
   console.log(`Listening to port ${PORT}`);
 });
 
-//** Websockets Server configurations */
+//** Websockets Server instance */
 const io = new Server(httpServer);
+
+//** Websockets Server configurations */
 io.on("connection", async (socket) => {
   console.log(new Date(), `New client connected (${socket.id})`);
 
@@ -55,3 +57,6 @@ io.on("connection", async (socket) => {
     socket.emit("products", products);
   });
 });
+
+//** Attach io instance to the app to be able to use it in routes */
+app.io = io;
