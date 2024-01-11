@@ -1,13 +1,14 @@
 import express from "express";
 import handlebars from "express-handlebars";
 import { Server } from "socket.io";
+import mongoose from "mongoose";
 
 import viewsRoutes from "./router/views.routes.js";
 import productsRoutes from "./router/products.routes.js";
 import cartsRoutes from "./router/carts.routes.js";
 
-import ProductManager from "./ProductManager.js";
-const productMng = new ProductManager("./src", "productsDb.json");
+import ProductManager from "./dao/ProductManagerFS.js";
+const productMng = new ProductManager("src/dao", "productsDb.json");
 
 const PORT = 8080;
 const app = express();
@@ -16,6 +17,12 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+
+//** MongoDB Atlas connection  */
+const usr = "coderAdm";
+const pwd = "G5jol6mgrb8avDAa";
+const db = "coder";
+mongoose.connect(`mongodb+srv://${usr}:${pwd}@codercluster.btpuooj.mongodb.net/${db}`);
 
 //** Handlebars configurations */
 app.engine("handlebars", handlebars.engine());

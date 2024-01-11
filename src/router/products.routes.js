@@ -1,7 +1,7 @@
 import { Router } from "express";
-import ProductManager from "../ProductManager.js";
+import ProductManager from "../dao/ProductManagerFS.js";
 
-const productMng = new ProductManager("./src", "productsDb.json");
+const productMng = new ProductManager("src/dao", "productsDb.json");
 
 const productsRoutes = Router();
 
