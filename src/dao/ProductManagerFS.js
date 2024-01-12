@@ -56,7 +56,7 @@ export default class ProductManager {
   async getProductById(id) {
     try {
       const products = await this.getProducts();
-      const product = products.find((p) => p.id === id);
+      const product = products.find((p) => p.id === +id);
 
       if (!product) throw `Product Id '${id}' Not found`;
 
@@ -147,7 +147,7 @@ export default class ProductManager {
       if (product) throw `Code "${product.code}" already exist`;
 
       const products = await this.getProducts();
-      product = products.find((p) => p.id === id);
+      product = products.find((p) => p.id === +id);
       if (!product) throw `Product Id "${id}" Not found`;
       product.title = title;
       product.description = description;
@@ -175,11 +175,11 @@ export default class ProductManager {
 
   async deleteProduct(id) {
     try {
-      const product = await this.getProductById(id);
+      const product = await this.getProductById(+id);
       if (!product) throw `Error: Id "${id}" Not found`;
 
       const products = await this.getProducts();
-      const newProducts = products.filter((p) => p.id !== id);
+      const newProducts = products.filter((p) => p.id !== +id);
 
       await fs.promises.writeFile(
         `${this.filePath}/${this.fileName}`,

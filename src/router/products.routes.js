@@ -1,7 +1,9 @@
 import { Router } from "express";
-import ProductManager from "../dao/ProductManagerFS.js";
 
-const productMng = new ProductManager("src/dao", "productsDb.json");
+// import ProductManager from "../dao/ProductManagerFS.js";
+// const productMng = new ProductManager("src/dao", "productsDb.json");
+import ProductManager from "../dao/ProductManagerDB.js";
+const productMng = new ProductManager();
 
 const productsRoutes = Router();
 
@@ -21,9 +23,9 @@ productsRoutes.get("/:pid", async (req, res) => {
   try {
     const id = req.params.pid;
 
-    const product = await productMng.getProductById(+id);
+    const product = await productMng.getProductById(id);
     if (!product) {
-      throw `Product Id '${id}' Not found`;
+      return res.status(404).send({ status: "error", error: `Product Id '${id}' Not found` });
     }
 
     res.send({ status: "success", payload: product });
@@ -39,7 +41,7 @@ productsRoutes.post("/", async (req, res) => {
       return res.status(400).send(result);
     }
 
-    res.send(result);
+    res.status(201).send(result);
   } catch (error) {
     res.status(400).send({ status: "error", error: error });
   } finally {
@@ -49,11 +51,16 @@ productsRoutes.post("/", async (req, res) => {
 
 productsRoutes.put("/:pid", async (req, res, next) => {
   try {
-    const id = parseInt(req.params.pid);
+    const id = req.params.pid;
 
     const result = await productMng.updateProduct({ ...req.body, id });
+
     if (result.status === "error") {
-      return res.status(400).send(result);
+      if (result.error?.includes("Not found")) {
+        return res.status(404).send(result);
+      } else {
+        return res.status(400).send(result);
+      }
     }
 
     res.send(result);
@@ -68,9 +75,14 @@ productsRoutes.delete("/:pid", async (req, res) => {
   try {
     const id = req.params.pid;
 
-    const result = await productMng.deleteProduct(+id);
+    const result = await productMng.deleteProduct(id);
+
     if (result.status === "error") {
-      return res.status(400).send(result);
+      if (result.error?.includes("Not found")) {
+        return res.status(404).send(result);
+      } else {
+        return res.status(400).send(result);
+      }
     }
 
     res.send(result);

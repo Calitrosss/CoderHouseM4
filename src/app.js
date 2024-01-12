@@ -9,6 +9,8 @@ import cartsRoutes from "./router/carts.routes.js";
 
 import ProductManager from "./dao/ProductManagerFS.js";
 const productMng = new ProductManager("src/dao", "productsDb.json");
+// import ProductManager from "../dao/ProductManagerDB.js";
+// const productMng = new ProductManager();
 
 const PORT = 8080;
 const app = express();
@@ -21,7 +23,7 @@ app.use(express.static("public"));
 //** MongoDB Atlas connection  */
 const usr = "coderAdm";
 const pwd = "G5jol6mgrb8avDAa";
-const db = "coder";
+const db = "ecommerce";
 mongoose.connect(`mongodb+srv://${usr}:${pwd}@codercluster.btpuooj.mongodb.net/${db}`);
 
 //** Handlebars configurations */
