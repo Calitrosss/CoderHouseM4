@@ -23,4 +23,8 @@ viewsRoutes.get("/realTimeProducts", async (req, res) => {
   res.render("realTimeProducts", { title: "Real Time Products" });
 });
 
+viewsRoutes.get("/chat", async (req, res) => {
+  res.render("chat", { title: "eCommerce Chat" });
+});
+
 export default viewsRoutes;
