@@ -24,9 +24,8 @@ productsRoutes.get("/:pid", async (req, res) => {
     const id = req.params.pid;
 
     const product = await productMng.getProductById(id);
-    if (!product) {
+    if (!product)
       return res.status(404).send({ status: "error", error: `Product Id '${id}' Not found` });
-    }
 
     res.send({ status: "success", payload: product });
   } catch (error) {

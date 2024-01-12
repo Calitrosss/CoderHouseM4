@@ -55,7 +55,7 @@ export default class CartManager {
     try {
       const carts = await this.getCarts();
 
-      const cart = carts.find((c) => c.id === id);
+      const cart = carts.find((c) => c.id === +id);
 
       if (!cart) throw `Cart Id '${id}' Not found`;
 
@@ -102,14 +102,14 @@ export default class CartManager {
 
       const qty = quantity || 1;
 
-      const cart = carts.find((c) => c.id === cid);
+      const cart = carts.find((c) => c.id === +cid);
       if (!cart) throw `Cart Id '${cid}' Not found`;
 
       const products = cart.products;
-      const product = products.find((p) => p.id === pid);
+      const product = products.find((p) => p.id === +pid);
 
       if (!product) {
-        cart.products.push({ id: pid, quantity: qty });
+        cart.products.push({ id: +pid, quantity: qty });
       } else {
         product.quantity += qty;
       }
