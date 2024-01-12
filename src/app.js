@@ -7,10 +7,10 @@ import viewsRoutes from "./router/views.routes.js";
 import productsRoutes from "./router/products.routes.js";
 import cartsRoutes from "./router/carts.routes.js";
 
-import ProductManager from "./dao/ProductManagerFS.js";
-const productMng = new ProductManager("src/dao", "productsDb.json");
-// import ProductManager from "../dao/ProductManagerDB.js";
-// const productMng = new ProductManager();
+// import ProductManager from "./dao/ProductManagerFS.js";
+// const productMng = new ProductManager("src/dao", "productsDb.json");
+import ProductManager from "./dao/ProductManagerDB.js";
+const productMng = new ProductManager();
 
 const PORT = 8080;
 const app = express();
@@ -49,20 +49,41 @@ io.on("connection", async (socket) => {
   console.log(new Date(), `New client connected (${socket.id})`);
 
   //** List products */
-  let products = await productMng.getProducts();
+  let productsList = await productMng.getProducts();
+
+  const products = productsList.map((x) => ({
+    id: x._id.toHexString(),
+    title: x.title,
+    code: x.code,
+  }));
+
   socket.emit("products", products);
 
   //** Add new product */
   socket.on("addProduct", async (data) => {
     await productMng.addProduct(data);
-    products = await productMng.getProducts();
+
+    productsList = await productMng.getProducts();
+    const products = productsList.map((x) => ({
+      id: x._id.toHexString(),
+      title: x.title,
+      code: x.code,
+    }));
+
     socket.emit("products", products);
   });
 
   //** Delete existing product */
   socket.on("delProduct", async (data) => {
     await productMng.deleteProduct(data);
-    products = await productMng.getProducts();
+
+    productsList = await productMng.getProducts();
+    const products = productsList.map((x) => ({
+      id: x._id.toHexString(),
+      title: x.title,
+      code: x.code,
+    }));
+
     socket.emit("products", products);
   });
 });

@@ -35,6 +35,6 @@ addButton.addEventListener("click", () => {
 
 //** Delete existing product */
 delButton.addEventListener("click", () => {
-  const id = +productIdToDelete.value;
+  const id = productIdToDelete.value;
   socket.emit("delProduct", id);
 });
