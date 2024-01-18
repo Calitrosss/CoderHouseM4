@@ -9,11 +9,11 @@ const productsRoutes = Router();
 
 productsRoutes.get("/", async (req, res) => {
   try {
-    const { limit } = req.query;
+    const { limit = 10, page = 1, sort = "", query = "" } = req.query;
 
-    const products = await productMng.getProducts(+limit);
+    const result = await productMng.getProducts(limit, page, sort, query);
 
-    res.send({ status: "success", payload: products });
+    res.send(result);
   } catch (error) {
     res.status(400).send({ status: "error", error: error });
   }

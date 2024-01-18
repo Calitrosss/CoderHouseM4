@@ -1,13 +1,22 @@
 import { productModel } from "../models/product.model.js";
 
 export default class ProductManager {
-  async getProducts(limit) {
+  async getProducts(limit, page, sort, query) {
     try {
-      const productsDbObj = await productModel.find();
+      const [key, value] = query.split(":");
 
-      if (limit) return productsDbObj.slice(0, +limit);
+      const result = await productModel.paginate(
+        { [key]: value },
+        { limit, page, sort: sort ? { price: sort } : {} }
+      );
 
-      return productsDbObj;
+      const payload = result.docs;
+
+      delete result.docs;
+      result.prevLink = result.hasPrevPage ? `page=${result.prevPage}` : null;
+      result.nextLink = result.hasNextPage ? `page=${result.nextPage}` : null;
+
+      return { status: "success", payload, ...result };
     } catch (error) {
       console.error(`Error getProducts(): ${error}`);
       return [];
