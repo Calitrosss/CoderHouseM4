@@ -1,3 +1,1 @@
-# Desafío clase 15
-
-MongoDB y Mongoose
+# 2da. Pre-entrega Proyecto Final

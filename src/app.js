@@ -7,9 +7,9 @@ import viewsRoutes from "./router/views.routes.js";
 import productsRoutes from "./router/products.routes.js";
 import cartsRoutes from "./router/carts.routes.js";
 
-// import ProductManager from "./dao/ProductManagerFS.js";
-// const productMng = new ProductManager("src/dao", "productsDb.json");
-import ProductManager from "./dao/ProductManagerDB.js";
+// import ProductManager from "./dao/fs/ProductManagerFS.js";
+// const productMng = new ProductManager("src/dao/fs", "productsDb.json");
+import ProductManager from "./dao/db/ProductManagerDB.js";
 const productMng = new ProductManager();
 
 import { messageModel } from "./dao/models/message.model.js";
@@ -29,7 +29,12 @@ const db = "ecommerce";
 mongoose.connect(`mongodb+srv://${usr}:${pwd}@codercluster.btpuooj.mongodb.net/${db}`);
 
 //** Handlebars configurations */
-app.engine("handlebars", handlebars.engine());
+const hbs = handlebars.create({
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+  },
+});
+app.engine("handlebars", hbs.engine);
 app.set("views", "src/views");
 app.set("view engine", "handlebars");
 
