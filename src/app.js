@@ -60,7 +60,7 @@ io.on("connection", async (socket) => {
   let productsList = await productMng.getProducts(limit, page, sort, query);
 
   const products = productsList.payload.map((x) => ({
-    id: x._id.toHexString(),
+    id: x._id.toString(),
     title: x.title,
     code: x.code,
   }));
@@ -73,7 +73,7 @@ io.on("connection", async (socket) => {
 
     productsList = await productMng.getProducts(limit, page, sort, query);
     const products = productsList.payload.map((x) => ({
-      id: x._id.toHexString(),
+      id: x._id.toString(),
       title: x.title,
       code: x.code,
     }));
@@ -87,7 +87,7 @@ io.on("connection", async (socket) => {
 
     productsList = await productMng.getProducts(limit, page, sort, query);
     const products = productsList.payload.map((x) => ({
-      id: x._id.toHexString(),
+      id: x._id.toString(),
       title: x.title,
       code: x.code,
     }));
