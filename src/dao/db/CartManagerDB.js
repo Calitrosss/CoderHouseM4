@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { cartModel } from "../models/cart.model.js";
 
 export default class CartManager {
@@ -12,9 +13,20 @@ export default class CartManager {
     }
   }
 
+  async getCartById(cid) {
+    try {
+      const cart = await cartModel.findOne({ _id: cid });
+
+      return cart;
+    } catch (error) {
+      console.error(`Error getCartById(): ${error}`);
+      return null;
+    }
+  }
+
   async getProductsByCartId(id) {
     try {
-      const cart = await cartModel.findOne({ _id: id });
+      const cart = await cartModel.findOne({ _id: id }).populate("products.product");
 
       if (!cart) throw `Cart Id "${id}" Not found`;
 
@@ -46,13 +58,14 @@ export default class CartManager {
     try {
       const qty = quantity || 1;
 
-      const products = await this.getProductsByCartId(cid);
+      const cart = await this.getCartById(cid);
+      if (!cart) throw `Cart Id "${cid}" Not found`;
 
-      if (!products) throw `Cart Id "${cid}" Not found`;
+      const products = cart.products;
 
-      const product = products.find((p) => p.id === pid);
+      const product = products.find((p) => p.product.toString() === pid);
       if (!product) {
-        products.push({ id: pid, quantity: qty });
+        products.push({ product: pid, quantity: qty });
       } else {
         product.quantity += qty;
       }
@@ -70,15 +83,16 @@ export default class CartManager {
 
   async removeProductFromCart(cid, pid) {
     try {
-      let products = await this.getProductsByCartId(cid);
+      const cart = await this.getCartById(cid);
+      if (!cart) throw `Cart Id "${cid}" Not found`;
 
-      if (!products) throw `Cart Id "${cid}" Not found`;
+      let products = cart.products;
 
-      const product = products.find((p) => p.id === pid);
+      const product = products.find((p) => p.product.toString() === pid);
       if (!product) {
         throw `Product Id "${pid}" not found in Cart ID "${cid}"`;
       } else {
-        products = products.filter((p) => p.id !== pid);
+        products = products.filter((p) => p.product.toString() !== pid);
       }
 
       const result = await cartModel.updateOne({ _id: cid }, { products });
@@ -88,6 +102,20 @@ export default class CartManager {
       return { status: "success", payload: `Product ID "${pid}" removed from Cart ID "${cid}"` };
     } catch (error) {
       console.error(`Error removeProductFromCart(): ${error}`);
+      return { status: "error", error: `${error}` };
+    }
+  }
+
+  async updateCartProducts(cid, products) {
+    try {
+      const cart = await this.getCartById(cid);
+      if (!cart) throw `Cart Id "${cid}" Not found`;
+
+      const result = await cartModel.updateOne({ _id: cid }, products);
+
+      return { status: "success", payload: `Cart ID "${cid}" updated with products` };
+    } catch (error) {
+      console.error(`Error updateCartProducts(): ${error}`);
       return { status: "error", error: `${error}` };
     }
   }
