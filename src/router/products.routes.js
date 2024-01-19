@@ -43,9 +43,10 @@ productsRoutes.post("/", async (req, res) => {
     res.status(201).send(result);
   } catch (error) {
     res.status(400).send({ status: "error", error: error });
-  } finally {
-    req.app.io.emit("products", await productMng.getProducts());
   }
+  // finally {
+  //   req.app.io.emit("products", await productMng.getProducts(1000, 1, "", ""));
+  // }
 });
 
 productsRoutes.put("/:pid", async (req, res, next) => {
@@ -65,9 +66,10 @@ productsRoutes.put("/:pid", async (req, res, next) => {
     res.send(result);
   } catch (error) {
     res.status(400).send({ status: "error", error: error });
-  } finally {
-    req.app.io.emit("products", await productMng.getProducts());
   }
+  // finally {
+  //   req.app.io.emit("products", await productMng.getProducts(1000, 1, "", ""));
+  // }
 });
 
 productsRoutes.delete("/:pid", async (req, res) => {
@@ -87,9 +89,10 @@ productsRoutes.delete("/:pid", async (req, res) => {
     res.send(result);
   } catch (error) {
     res.status(400).send({ status: "error", error: error });
-  } finally {
-    req.app.io.emit("products", await productMng.getProducts());
   }
+  // finally {
+  //   req.app.io.emit("products", await productMng.getProducts(1000, 1, "", ""));
+  // }
 });
 
 export default productsRoutes;

@@ -23,10 +23,10 @@ socket.on("products", (data) => {
 //** Add new product */
 addButton.addEventListener("click", () => {
   const product = {
-    code: code.value,
-    title: title.value,
-    description: description.value,
-    category: category.value,
+    code: code.value.trim(),
+    title: title.value.trim(),
+    description: description.value.trim(),
+    category: category.value.trim(),
     price: +price.value,
     stock: +stock.value,
   };
@@ -35,6 +35,6 @@ addButton.addEventListener("click", () => {
 
 //** Delete existing product */
 delButton.addEventListener("click", () => {
-  const id = productIdToDelete.value;
+  const id = productIdToDelete.value.trim();
   socket.emit("delProduct", id);
 });

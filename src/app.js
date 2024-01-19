@@ -56,9 +56,10 @@ io.on("connection", async (socket) => {
   console.log(new Date(), `New client connected (${socket.id})`);
 
   //** List products */
-  let productsList = await productMng.getProducts();
+  const [limit, page, sort, query] = [1000, 1, "", ""];
+  let productsList = await productMng.getProducts(limit, page, sort, query);
 
-  const products = productsList.map((x) => ({
+  const products = productsList.payload.map((x) => ({
     id: x._id.toHexString(),
     title: x.title,
     code: x.code,
@@ -70,8 +71,8 @@ io.on("connection", async (socket) => {
   socket.on("addProduct", async (data) => {
     await productMng.addProduct(data);
 
-    productsList = await productMng.getProducts();
-    const products = productsList.map((x) => ({
+    productsList = await productMng.getProducts(limit, page, sort, query);
+    const products = productsList.payload.map((x) => ({
       id: x._id.toHexString(),
       title: x.title,
       code: x.code,
@@ -84,8 +85,8 @@ io.on("connection", async (socket) => {
   socket.on("delProduct", async (data) => {
     await productMng.deleteProduct(data);
 
-    productsList = await productMng.getProducts();
-    const products = productsList.map((x) => ({
+    productsList = await productMng.getProducts(limit, page, sort, query);
+    const products = productsList.payload.map((x) => ({
       id: x._id.toHexString(),
       title: x.title,
       code: x.code,
