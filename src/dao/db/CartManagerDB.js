@@ -119,4 +119,29 @@ export default class CartManager {
       return { status: "error", error: `${error}` };
     }
   }
+
+  async updateCartProductQuantity(cid, pid, quantity) {
+    try {
+      if (!quantity || quantity < 0) throw "Quantity is required";
+
+      const cart = await this.getCartById(cid);
+      if (!cart) throw `Cart Id "${cid}" Not found`;
+
+      const products = cart.products;
+
+      const product = products.find((p) => p.product.toString() === pid);
+      if (!product) {
+        throw `Product Id "${pid}" not found in Cart ID "${cid}"`;
+      } else {
+        product.quantity = quantity;
+      }
+
+      const result = await cart.save();
+
+      return { status: "success", payload: `Product ID "${pid}" updated in Cart ID "${cid}"` };
+    } catch (error) {
+      console.error(`Error updateCartProductQuantity(): ${error}`);
+      return { status: "error", error: `${error}` };
+    }
+  }
 }
