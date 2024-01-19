@@ -1,0 +1,23 @@
+<div>
+  <h1>PRODUCTOS</h1>
+  <ul>
+    {{#each productsList.payload}}
+      <li>{{this.id}}
+        -
+        {{this.title}}
+        ({{this.code}}) |
+        <button>Ver detalle</button>
+        |
+        <button>Agregar al carrito</button>
+        |</li>
+    {{/each}}
+  </ul>
+  <br />
+  <span>Página {{productsList.page}}/{{productsList.totalPages}}</span>
+  {{#if productsList.hasPrevPage}}
+    <button><a href={{productsList.prevLink}}>Anterior</a></button>
+  {{/if}}
+  {{#if productsList.hasNextPage}}
+    <button><a href={{productsList.nextLink}}>Siguiente</a></button>
+  {{/if}}
+</div>

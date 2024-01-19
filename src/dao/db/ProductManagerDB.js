@@ -13,8 +13,16 @@ export default class ProductManager {
       const payload = result.docs;
 
       delete result.docs;
-      result.prevLink = result.hasPrevPage ? `page=${result.prevPage}` : null;
-      result.nextLink = result.hasNextPage ? `page=${result.nextPage}` : null;
+      result.prevLink = result.hasPrevPage
+        ? `/products?limit=${result.limit}&page=${result.prevPage}&sort=${sort || ""}&query=${
+            query || ""
+          }`
+        : null;
+      result.nextLink = result.hasNextPage
+        ? `/products?limit=${result.limit}&page=${result.nextPage}&sort=${sort || ""}&query=${
+            query || ""
+          }`
+        : null;
 
       return { status: "success", payload, ...result };
     } catch (error) {
