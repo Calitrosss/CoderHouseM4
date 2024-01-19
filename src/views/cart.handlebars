@@ -1,0 +1,8 @@
+<div>
+  <h1>CARRITO</h1>
+  <ul>
+    {{#each products}}
+      <li>{{this.product._id}} - {{this.product.title}} ({{this.product.code}}) - {{this.quantity}}
+    {{/each}}
+  </ul>
+</div>

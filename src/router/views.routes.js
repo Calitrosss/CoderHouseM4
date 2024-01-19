@@ -5,6 +5,9 @@ import { Router } from "express";
 import ProductManager from "../dao/db/ProductManagerDB.js";
 const productMng = new ProductManager();
 
+import CartManager from "../dao/db/CartManagerDB.js";
+const cartMng = new CartManager();
+
 const viewsRoutes = Router();
 
 viewsRoutes.get("/", async (req, res) => {
@@ -32,6 +35,17 @@ viewsRoutes.get("/products", async (req, res) => {
     }));
 
     res.render("products", { title: "Products", productsList });
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+viewsRoutes.get("/carts/:cid", async (req, res) => {
+  try {
+    const { cid } = req.params;
+    const products = await cartMng.getProductsByCartId(cid);
+    console.log(products);
+    res.render("cart", { title: "Cart", products });
   } catch (error) {
     console.error(error);
   }
