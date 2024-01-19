@@ -16,7 +16,7 @@ export default class CartManager {
     try {
       const cart = await cartModel.findOne({ _id: id });
 
-      if (!cart) throw `Cart Id '${id}' Not found`;
+      if (!cart) throw `Cart Id "${id}" Not found`;
 
       return cart.products;
     } catch (error) {
@@ -48,7 +48,7 @@ export default class CartManager {
 
       const products = await this.getProductsByCartId(cid);
 
-      if (!products) throw `Cart Id '${cid}' Not found`;
+      if (!products) throw `Cart Id "${cid}" Not found`;
 
       const product = products.find((p) => p.id === pid);
       if (!product) {
@@ -64,6 +64,30 @@ export default class CartManager {
       return { status: "success", payload: `Product ID "${pid}" added to Cart ID "${cid}"` };
     } catch (error) {
       console.error(`Error addProductToCart(): ${error}`);
+      return { status: "error", error: `${error}` };
+    }
+  }
+
+  async removeProductFromCart(cid, pid) {
+    try {
+      let products = await this.getProductsByCartId(cid);
+
+      if (!products) throw `Cart Id "${cid}" Not found`;
+
+      const product = products.find((p) => p.id === pid);
+      if (!product) {
+        throw `Product Id "${pid}" not found in Cart ID "${cid}"`;
+      } else {
+        products = products.filter((p) => p.id !== pid);
+      }
+
+      const result = await cartModel.updateOne({ _id: cid }, { products });
+
+      console.log(`Success: Product ID "${pid}" removed from Cart ID "${cid}"`);
+
+      return { status: "success", payload: `Product ID "${pid}" removed from Cart ID "${cid}"` };
+    } catch (error) {
+      console.error(`Error removeProductFromCart(): ${error}`);
       return { status: "error", error: `${error}` };
     }
   }

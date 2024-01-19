@@ -65,4 +65,24 @@ cartsRoutes.post("/:cid/product/:pid", async (req, res) => {
   }
 });
 
+cartsRoutes.delete("/:cid/product/:pid", async (req, res) => {
+  try {
+    const { cid, pid } = req.params;
+
+    const result = await cartMng.removeProductFromCart(cid, pid);
+
+    if (result.status === "error") {
+      if (result.error?.includes("Not found")) {
+        return res.status(404).send(result);
+      } else {
+        return res.status(400).send(result);
+      }
+    }
+
+    res.send(result);
+  } catch (error) {
+    res.status(400).send({ status: "error", error: error });
+  }
+});
+
 export default cartsRoutes;

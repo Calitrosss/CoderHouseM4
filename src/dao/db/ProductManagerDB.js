@@ -27,7 +27,7 @@ export default class ProductManager {
     try {
       const product = await productModel.findOne({ _id: id });
 
-      if (!product) throw `Product Id '${id}' Not found`;
+      if (!product) throw `Product Id "${id}" Not found`;
 
       return product;
     } catch (error) {
@@ -95,7 +95,7 @@ export default class ProductManager {
 
       const result = await productModel.updateOne({ _id: id }, updateProduct);
 
-      if (!result.matchedCount) return { status: "error", error: `Product Id '${id}' Not found` };
+      if (!result.matchedCount) return { status: "error", error: `Product Id "${id}" Not found` };
 
       console.log(`Success: Product ID "${id}" updated`);
       return { status: "success", payload: `Product ID "${id}" updated` };
@@ -109,7 +109,7 @@ export default class ProductManager {
     try {
       const result = await productModel.deleteOne({ _id: id });
 
-      if (!result.deletedCount) return { status: "error", error: `Product Id '${id}' Not found` };
+      if (!result.deletedCount) return { status: "error", error: `Product Id "${id}" Not found` };
 
       console.log(`Success: Product ID "${id}" deleted`);
       return { status: "success", payload: `Success: Product ID "${id}" deleted` };
