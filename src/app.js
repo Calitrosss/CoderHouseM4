@@ -8,6 +8,7 @@ import MongoStore from "connect-mongo";
 import viewsRoutes from "./router/views.routes.js";
 import productsRoutes from "./router/products.routes.js";
 import cartsRoutes from "./router/carts.routes.js";
+import sessionsRoutes from "./router/sessions.routes.js";
 
 // import ProductManager from "./dao/fs/ProductManagerFS.js";
 // const productMng = new ProductManager("src/dao/fs", "productsDb.json");
@@ -60,6 +61,7 @@ app.use(
 app.use("/", viewsRoutes);
 app.use("/api/products", productsRoutes);
 app.use("/api/carts", cartsRoutes);
+app.use("/api/sessions", sessionsRoutes);
 
 //** Http Server Listen */
 const httpServer = app.listen(PORT, async () => {

@@ -3,3 +3,9 @@ export const chekAuth = (req, res, next) => {
 
   next();
 };
+
+export const checkUser = (req, res, next) => {
+  if (req.session.user) return res.redirect("/");
+
+  next();
+};

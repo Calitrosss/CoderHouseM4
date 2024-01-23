@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { chekAuth } from "../middlewares/auth.js";
+import { chekAuth, checkUser } from "../middlewares/auth.js";
 
 // import ProductManager from "../dao/fs/ProductManagerFS.js";
 // const productMng = new ProductManager("src/dao/fs", "productsDb.json");
@@ -53,8 +53,12 @@ viewsRoutes.get("/carts/:cid", async (req, res) => {
   }
 });
 
-viewsRoutes.get("/login", (req, res) => {
+viewsRoutes.get("/login", checkUser, (req, res) => {
   res.render("login", { title: "Login" });
+});
+
+viewsRoutes.get("/register", checkUser, (req, res) => {
+  res.render("register", { title: "Register" });
 });
 
 export default viewsRoutes;
