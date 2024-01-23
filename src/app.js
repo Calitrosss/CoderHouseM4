@@ -2,6 +2,8 @@ import express from "express";
 import handlebars from "express-handlebars";
 import { Server } from "socket.io";
 import mongoose from "mongoose";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 
 import viewsRoutes from "./router/views.routes.js";
 import productsRoutes from "./router/products.routes.js";
@@ -26,7 +28,8 @@ app.use(express.static("public"));
 const usr = "coderAdm";
 const pwd = "G5jol6mgrb8avDAa";
 const db = "ecommerce";
-mongoose.connect(`mongodb+srv://${usr}:${pwd}@codercluster.btpuooj.mongodb.net/${db}`);
+const connString = `mongodb+srv://${usr}:${pwd}@codercluster.btpuooj.mongodb.net/${db}`;
+mongoose.connect(connString);
 
 //** Handlebars configurations */
 const hbs = handlebars.create({
@@ -37,6 +40,21 @@ const hbs = handlebars.create({
 app.engine("handlebars", hbs.engine);
 app.set("views", "src/views");
 app.set("view engine", "handlebars");
+
+//** Sessions configuration */
+const secretKey = "Cod3rHous3";
+const sessionExpSecs = 60;
+app.use(
+  session({
+    secret: secretKey,
+    resave: true,
+    saveUninitialized: true,
+    store: MongoStore.create({
+      mongoUrl: connString,
+      ttl: sessionExpSecs,
+    }),
+  })
+);
 
 //** Routes configurations */
 app.use("/", viewsRoutes);
