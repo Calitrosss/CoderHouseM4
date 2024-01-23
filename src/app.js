@@ -43,7 +43,7 @@ app.set("view engine", "handlebars");
 
 //** Sessions configuration */
 const secretKey = "Cod3rHous3";
-const sessionExpSecs = 60;
+const sessionExpSecs = 300;
 app.use(
   session({
     secret: secretKey,

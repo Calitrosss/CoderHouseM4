@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { chekAuth } from "../middlewares/auth.js";
 
 // import ProductManager from "../dao/fs/ProductManagerFS.js";
 // const productMng = new ProductManager("src/dao/fs", "productsDb.json");
@@ -23,7 +24,7 @@ viewsRoutes.get("/chat", async (req, res) => {
   res.render("chat", { title: "eCommerce Chat" });
 });
 
-viewsRoutes.get("/products", async (req, res) => {
+viewsRoutes.get("/products", chekAuth, async (req, res) => {
   try {
     const { limit = 10, page = 1, sort = "", query = "" } = req.query;
 
@@ -50,6 +51,10 @@ viewsRoutes.get("/carts/:cid", async (req, res) => {
   } catch (error) {
     console.error(error);
   }
+});
+
+viewsRoutes.get("/login", (req, res) => {
+  res.render("login", { title: "Login" });
 });
 
 export default viewsRoutes;
