@@ -11,7 +11,8 @@ const cartMng = new CartManager();
 const viewsRoutes = Router();
 
 viewsRoutes.get("/", async (req, res) => {
-  res.render("home", { title: "Home" });
+  // res.render("home", { title: "Home" });
+  res.redirect("/products");
 });
 
 viewsRoutes.get("/realTimeProducts", async (req, res) => {
