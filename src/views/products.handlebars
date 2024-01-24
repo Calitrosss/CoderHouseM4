@@ -1,5 +1,6 @@
 <div>
   <h1>PRODUCTOS</h1>
+  <h2>Bienvenido {{user.first_name}} {{user.last_name}} ({{user.role}})</h2>
   <ul>
     {{#each productsList.payload}}
       <li>{{this.id}}
@@ -20,4 +21,5 @@
   {{#if productsList.hasNextPage}}
     <button><a href={{productsList.nextLink}}>Siguiente</a></button>
   {{/if}}
+  <p><button id="btnLogout">Salir</button></p>
 </div>

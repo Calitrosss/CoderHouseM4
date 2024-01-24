@@ -26,6 +26,8 @@ viewsRoutes.get("/chat", async (req, res) => {
 
 viewsRoutes.get("/products", chekAuth, async (req, res) => {
   try {
+    const { user } = req.session;
+
     const { limit = 10, page = 1, sort = "", query = "" } = req.query;
 
     const productsList = await productMng.getProducts(limit, page, sort, query);
@@ -36,7 +38,7 @@ viewsRoutes.get("/products", chekAuth, async (req, res) => {
       code: x.code,
     }));
 
-    res.render("products", { title: "Products", productsList });
+    res.render("products", { title: "Products", productsList, user });
   } catch (error) {
     console.error(error);
   }
@@ -59,10 +61,6 @@ viewsRoutes.get("/login", checkUser, (req, res) => {
 
 viewsRoutes.get("/register", checkUser, (req, res) => {
   res.render("register", { title: "Register" });
-});
-
-viewsRoutes.get("/error", (req, res) => {
-  res.render("error", { title: "error", res });
 });
 
 export default viewsRoutes;
