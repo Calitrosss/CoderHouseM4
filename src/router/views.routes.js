@@ -63,4 +63,8 @@ viewsRoutes.get("/register", checkUser, (req, res) => {
   res.render("register", { title: "Register" });
 });
 
+viewsRoutes.get("/failtoregister", (req, res) => {
+  res.render("failtoregister", { title: "Register Error" });
+});
+
 export default viewsRoutes;

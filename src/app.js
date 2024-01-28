@@ -10,6 +10,9 @@ import productsRoutes from "./router/products.routes.js";
 import cartsRoutes from "./router/carts.routes.js";
 import sessionsRoutes from "./router/sessions.routes.js";
 
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
+
 // import ProductManager from "./dao/fs/ProductManagerFS.js";
 // const productMng = new ProductManager("src/dao/fs", "productsDb.json");
 import ProductManager from "./dao/db/ProductManagerDB.js";
@@ -56,6 +59,11 @@ app.use(
     }),
   })
 );
+
+//** Passport Initalization */
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 //** Routes configurations */
 app.use("/", viewsRoutes);
