@@ -12,38 +12,25 @@ sessionsRoutes.post(
   }
 );
 
-// sessionsRoutes.post("/login", async (req, res) => {
-//   try {
-//     const { email, password } = req.body;
+sessionsRoutes.post(
+  "/login",
+  passport.authenticate("login", { failureRedirect: "/failtologin" }),
+  async (req, res) => {
+    if (!req.user) {
+      console.error("Error with credentials");
+      return res.redirect("/failtologin");
+    }
 
-//     let user = {};
+    req.session.user = {
+      first_name: req.user.first_name,
+      last_name: req.user.last_name,
+      role: req.user.role,
+      email: req.user.email,
+    };
 
-//     if (email === "adminCoder@coder.com") {
-//       if (password !== "adminCod3r123") return res.status(401).json({ error: "Invalid password" });
-
-//       user = {
-//         first_name: "Admin",
-//         last_name: "Coder",
-//         role: "admin",
-//         email,
-//         password,
-//       };
-//     } else {
-//       user = await usersModel.findOne({ email });
-//     }
-
-//     if (!user) return res.status(404).json({ message: "Not found" });
-
-//     if (user.password !== password) return res.status(401).json({ error: "Invalid password" });
-
-//     req.session.user = user;
-
-//     res.redirect("/");
-//   } catch (error) {
-//     console.error(`${error}`);
-//     res.status(400).send({ error: `${error}` });
-//   }
-// });
+    res.redirect("/");
+  }
+);
 
 sessionsRoutes.post("/logout", async (req, res) => {
   try {
