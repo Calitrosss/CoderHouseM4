@@ -45,4 +45,19 @@ sessionsRoutes.post("/logout", async (req, res) => {
   }
 });
 
+sessionsRoutes.get(
+  "/github",
+  passport.authenticate("github", { scope: ["user:email"] }),
+  async (req, res) => {}
+);
+
+sessionsRoutes.get(
+  "/githubcallback",
+  passport.authenticate("github", { failureRedirect: "/login" }),
+  async (req, res) => {
+    req.session.user = req.user;
+    res.redirect("/");
+  }
+);
+
 export default sessionsRoutes;
