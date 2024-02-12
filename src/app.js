@@ -20,6 +20,8 @@ const productMng = new ProductManager();
 
 import { messageModel } from "./dao/models/message.model.js";
 
+import { connString, secretKey } from "./utils/constants.js";
+
 const PORT = 8080;
 const app = express();
 
@@ -29,10 +31,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 //** MongoDB Atlas connection  */
-const usr = "coderAdm";
-const pwd = "G5jol6mgrb8avDAa";
-const db = "ecommerce";
-const connString = `mongodb+srv://${usr}:${pwd}@codercluster.btpuooj.mongodb.net/${db}`;
 mongoose.connect(connString);
 
 //** Handlebars configurations */
@@ -46,8 +44,6 @@ app.set("views", "src/views");
 app.set("view engine", "handlebars");
 
 //** Sessions configuration */
-const secretKey = "Cod3rHous3";
-const sessionExpSecs = 300;
 app.use(
   session({
     secret: secretKey,
@@ -55,7 +51,7 @@ app.use(
     saveUninitialized: true,
     store: MongoStore.create({
       mongoUrl: connString,
-      ttl: sessionExpSecs,
+      ttl: 300,
     }),
   })
 );

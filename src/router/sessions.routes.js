@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { usersModel } from "../dao/models/users.model.js";
 import passport from "passport";
 
 const sessionsRoutes = Router();
@@ -24,8 +23,9 @@ sessionsRoutes.post(
     req.session.user = {
       first_name: req.user.first_name,
       last_name: req.user.last_name,
-      role: req.user.role,
       email: req.user.email,
+      age: req.user.age,
+      role: req.user.role,
     };
 
     res.redirect("/");
@@ -59,5 +59,16 @@ sessionsRoutes.get(
     res.redirect("/");
   }
 );
+
+sessionsRoutes.get("/current", async (req, res) => {
+  try {
+    if (!req.session.user) return res.status(401).send({ error: "Error with credentials" });
+
+    res.send(req.session.user);
+  } catch (error) {
+    console.error(`${error}`);
+    res.status(400).send({ error: `${error}` });
+  }
+});
 
 export default sessionsRoutes;

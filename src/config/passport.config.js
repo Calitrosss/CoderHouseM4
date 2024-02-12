@@ -16,7 +16,7 @@ const initializePassport = () => {
       },
       async (req, username, password, done) => {
         try {
-          const { first_name, last_name } = req.body;
+          const { first_name, last_name, age } = req.body;
 
           if (username === "adminCoder@coder.com") {
             console.log("Not authorized");
@@ -33,6 +33,7 @@ const initializePassport = () => {
             first_name,
             last_name,
             email: username,
+            age,
             password: createHash(password),
           };
           const result = await usersModel.create(newUser);
@@ -61,9 +62,10 @@ const initializePassport = () => {
             _id: "adminCoder",
             first_name: "Admin",
             last_name: "Coder",
-            role: "admin",
             email: username,
+            age: 0,
             password: createHash(password),
+            role: "admin",
           };
         } else {
           user = await usersModel.findOne({ email: username });
@@ -135,8 +137,10 @@ const initializePassport = () => {
       user = {
         first_name: "Admin",
         last_name: "Coder",
-        role: "admin",
         email: "adminCoder@coder.com",
+        age: null,
+        cart: null,
+        role: "admin",
       };
     } else {
       user = await usersModel.findById(id);
