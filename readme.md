@@ -1,4 +1,4 @@
-# Desafío clase 23
+# Desafío clase 24
 
 - Modelo User contará con los campos:
   - first_name:String,
