@@ -20,9 +20,11 @@ const productMng = new ProductManager();
 
 import { messageModel } from "./dao/models/message.model.js";
 
-import { connString, secretKey } from "./utils/constants.js";
+// const port = 8080;
+// import { connString, secretKey } from "./utils/constants.js";
+import { getVariables } from "./config/dotenv.config.js";
+const { port, connString, secretKey } = getVariables();
 
-const PORT = 8080;
 const app = express();
 
 //** Basic configurations */
@@ -68,8 +70,8 @@ app.use("/api/carts", cartsRoutes);
 app.use("/api/sessions", sessionsRoutes);
 
 //** Http Server Listen */
-const httpServer = app.listen(PORT, async () => {
-  console.log(`Listening to port ${PORT}`);
+const httpServer = app.listen(port, async () => {
+  console.log(`Listening to port ${port}`);
 });
 
 //** Websockets Server instance */
