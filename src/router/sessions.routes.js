@@ -1,74 +1,37 @@
 import { Router } from "express";
 import passport from "passport";
+import {
+  postRegister,
+  postLogin,
+  postLogout,
+  getGitHubCallback,
+  getCurrent,
+} from "../controllers/sessions.controller.js";
 
 const sessionsRoutes = Router();
 
 sessionsRoutes.post(
   "/register",
   passport.authenticate("register", { failureRedirect: "/failtoregister" }),
-  async (req, res) => {
-    res.redirect("/login");
-  }
+  postRegister
 );
 
 sessionsRoutes.post(
   "/login",
   passport.authenticate("login", { failureRedirect: "/failtologin" }),
-  async (req, res) => {
-    if (!req.user) {
-      console.error("Error with credentials");
-      return res.redirect("/failtologin");
-    }
-
-    req.session.user = {
-      first_name: req.user.first_name,
-      last_name: req.user.last_name,
-      email: req.user.email,
-      age: req.user.age,
-      role: req.user.role,
-    };
-
-    res.redirect("/");
-  }
+  postLogin
 );
 
-sessionsRoutes.post("/logout", async (req, res) => {
-  try {
-    req.session.destroy((err) => {
-      if (err) return res.status(500).json({ error: err });
-    });
+sessionsRoutes.post("/logout", postLogout);
 
-    res.send({ redirect: "http://localhost:8080/login" });
-  } catch (error) {
-    console.error(`${error}`);
-    res.status(400).send({ error: `${error}` });
-  }
-});
-
-sessionsRoutes.get(
-  "/github",
-  passport.authenticate("github", { scope: ["user:email"] }),
-  async (req, res) => {}
-);
+sessionsRoutes.get("/github", passport.authenticate("github", { scope: ["user:email"] }));
 
 sessionsRoutes.get(
   "/githubcallback",
   passport.authenticate("github", { failureRedirect: "/login" }),
-  async (req, res) => {
-    req.session.user = req.user;
-    res.redirect("/");
-  }
+  getGitHubCallback
 );
 
-sessionsRoutes.get("/current", async (req, res) => {
-  try {
-    if (!req.session.user) return res.status(401).send({ error: "Error with credentials" });
-
-    res.send(req.session.user);
-  } catch (error) {
-    console.error(`${error}`);
-    res.status(400).send({ error: `${error}` });
-  }
-});
+sessionsRoutes.get("/current", getCurrent);
 
 export default sessionsRoutes;

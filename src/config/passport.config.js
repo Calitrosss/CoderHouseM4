@@ -99,7 +99,7 @@ const initializePassport = () => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          console.log({ profile });
+          // console.log({ profile });
 
           const user = await usersModel.findOne({ email: profile._json.email });
 
