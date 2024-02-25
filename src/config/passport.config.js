@@ -4,6 +4,10 @@ import { Strategy as GitHubStrategy } from "passport-github2";
 import { usersModel } from "../dao/models/users.model.js";
 import { createHash, isValidPassword } from "../utils/bcrypt.js";
 
+import { getVariables } from "../config/dotenv.config.js";
+const { adminEmail, adminPassword, githubClientId, githubClientSecret, githubCallbackUrl } =
+  getVariables();
+
 const localStrategy = local.Strategy;
 
 const initializePassport = () => {
@@ -18,7 +22,7 @@ const initializePassport = () => {
         try {
           const { first_name, last_name, age } = req.body;
 
-          if (username === "adminCoder@coder.com") {
+          if (username === adminEmail) {
             console.log("Not authorized");
             return done(null, false);
           }
@@ -52,8 +56,8 @@ const initializePassport = () => {
       try {
         let user = {};
 
-        if (username === "adminCoder@coder.com") {
-          if (password !== "adminCod3r123") {
+        if (username === adminEmail) {
+          if (password !== adminPassword) {
             console.log("Invalid password");
             return done(null, false);
           }
@@ -93,9 +97,9 @@ const initializePassport = () => {
     "github",
     new GitHubStrategy(
       {
-        clientID: "Iv1.b8cc1dfe39090414",
-        clientSecret: "a953493d334f16c2ef5e2bf7e130c6ef2bab1f4e",
-        callbackURL: "http://localhost:8080/api/sessions/githubcallback",
+        clientID: githubClientId,
+        clientSecret: githubClientSecret,
+        callbackURL: githubCallbackUrl,
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
@@ -108,7 +112,7 @@ const initializePassport = () => {
               first_name: profile._json.name.split(" ")[0] || "(FirstName)",
               last_name: profile._json.name.split(" ")[1] || "(LastName)",
               email: profile._json.email,
-              password: "*GitHubGeneratedPassword*",
+              password: createHash("*GitHubGeneratedPassword*"),
             };
 
             const result = await usersModel.create(newUser);
