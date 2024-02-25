@@ -3,6 +3,8 @@
 import ProductManager from "../dao/db/ProductManagerDB.js";
 const productMng = new ProductManager();
 
+// import CartManager from "../dao/fs/CartManagerFS.js";
+// const cartMng = new CartManager("src/dao/fs", "cartsDb.json");
 import CartManager from "../dao/db/CartManagerDB.js";
 const cartMng = new CartManager();
 
