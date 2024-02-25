@@ -1,74 +1,35 @@
 import { Router } from "express";
 import { chekAuth, checkUser } from "../middlewares/auth.js";
-
-// import ProductManager from "../dao/fs/ProductManagerFS.js";
-// const productMng = new ProductManager("src/dao/fs", "productsDb.json");
-import ProductManager from "../dao/db/ProductManagerDB.js";
-const productMng = new ProductManager();
-
-import CartManager from "../dao/db/CartManagerDB.js";
-const cartMng = new CartManager();
+import {
+  getHome,
+  getRealTimeProducts,
+  getChat,
+  getProducts,
+  getCartProducts,
+  getLogin,
+  getRegister,
+  getFailRegister,
+  getFailLogin,
+} from "../controllers/views.controller.js";
 
 const viewsRoutes = Router();
 
-viewsRoutes.get("/", async (req, res) => {
-  // res.render("home", { title: "Home" });
-  res.redirect("/products");
-});
+viewsRoutes.get("/", getHome);
 
-viewsRoutes.get("/realTimeProducts", async (req, res) => {
-  res.render("realTimeProducts", { title: "Real Time Products" });
-});
+viewsRoutes.get("/realTimeProducts", chekAuth, getRealTimeProducts);
 
-viewsRoutes.get("/chat", async (req, res) => {
-  res.render("chat", { title: "eCommerce Chat" });
-});
+viewsRoutes.get("/chat", chekAuth, getChat);
 
-viewsRoutes.get("/products", chekAuth, async (req, res) => {
-  try {
-    const { user } = req.session;
+viewsRoutes.get("/products", chekAuth, getProducts);
 
-    const { limit = 10, page = 1, sort = "", query = "" } = req.query;
+viewsRoutes.get("/carts/:cid", chekAuth, getCartProducts);
 
-    const productsList = await productMng.getProducts(limit, page, sort, query);
+viewsRoutes.get("/login", checkUser, getLogin);
 
-    const products = productsList.payload.map((x) => ({
-      id: x._id.toString(),
-      title: x.title,
-      code: x.code,
-    }));
+viewsRoutes.get("/register", checkUser, getRegister);
 
-    res.render("products", { title: "Products", productsList, user });
-  } catch (error) {
-    console.error(error);
-  }
-});
+viewsRoutes.get("/failtoregister", getFailRegister);
 
-viewsRoutes.get("/carts/:cid", async (req, res) => {
-  try {
-    const { cid } = req.params;
-    const products = await cartMng.getProductsByCartId(cid);
-    console.log(products);
-    res.render("cart", { title: "Cart", products });
-  } catch (error) {
-    console.error(error);
-  }
-});
-
-viewsRoutes.get("/login", checkUser, (req, res) => {
-  res.render("login", { title: "Login" });
-});
-
-viewsRoutes.get("/register", checkUser, (req, res) => {
-  res.render("register", { title: "Register" });
-});
-
-viewsRoutes.get("/failtoregister", (req, res) => {
-  res.render("failtoregister", { title: "Register Error" });
-});
-
-viewsRoutes.get("/failtologin", (req, res) => {
-  res.render("failtologin", { title: "Login Error" });
-});
+viewsRoutes.get("/failtologin", getFailLogin);
 
 export default viewsRoutes;
