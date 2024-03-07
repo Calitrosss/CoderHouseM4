@@ -11,15 +11,13 @@ export const checkUser = (req, res, next) => {
 };
 
 export const isAdmin = (req, res, next) => {
-  if (!req.session.user?.role || req.session.user.role !== "admin")
-    return res.status(403).send({ message: "Forbbiden" });
+  if (req.session.user?.role !== "admin") return res.status(403).send({ message: "Forbbiden" });
 
   next();
 };
 
 export const isUser = (req, res, next) => {
-  if (!req.session.user?.role || req.session.user.role !== "user")
-    return res.status(403).send({ message: "Forbbiden" });
+  if (req.session.user?.role !== "user") return res.status(403).send({ message: "Forbbiden" });
 
   next();
 };
