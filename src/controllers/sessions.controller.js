@@ -1,3 +1,5 @@
+import UsersDTO from "../dao/dto/users.dto.js";
+
 export const postRegister = (req, res) => {
   res.redirect("/login");
 };
@@ -39,7 +41,7 @@ export const getGitHubCallback = (req, res) => {
 export const getCurrent = (req, res) => {
   try {
     if (!req.session.user) return res.status(401).send({ error: "Error with credentials" });
-    res.send(req.session.user);
+    res.send(new UsersDTO(req.session.user));
   } catch (error) {
     console.error(`${error}`);
     res.status(400).send({ error: `${error}` });
