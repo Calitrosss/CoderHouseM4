@@ -37,7 +37,7 @@ export const addProduct = async (req, res) => {
     res.status(400).send({ status: "error", error: error });
   }
   // finally {
-  //   req.app.io.emit("products", await productMng.getProducts(1000, 1, "", ""));
+  //   req.app.io.emit("products", await getProductsService(1000, 1, "", ""));
   // }
 };
 
@@ -57,7 +57,7 @@ export const updateProduct = async (req, res) => {
     res.status(400).send({ status: "error", error: error });
   }
   // finally {
-  //   req.app.io.emit("products", await productMng.getProducts(1000, 1, "", ""));
+  //   req.app.io.emit("products", await getProductsService(1000, 1, "", ""));
   // }
 };
 
@@ -77,6 +77,6 @@ export const deleteProduct = async (req, res) => {
     res.status(400).send({ status: "error", error: error });
   }
   // finally {
-  //   req.app.io.emit("products", await productMng.getProducts(1000, 1, "", ""));
+  //   req.app.io.emit("products", await getProductsService(1000, 1, "", ""));
   // }
 };

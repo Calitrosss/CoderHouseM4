@@ -13,15 +13,14 @@ import sessionsRoutes from "./router/sessions.routes.js";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 
-// import ProductManager from "./dao/fs/ProductManagerFS.js";
-// const productMng = new ProductManager("src/dao/fs", "productsDb.json");
-import ProductManager from "./dao/db/ProductManagerDB.js";
-const productMng = new ProductManager();
+import {
+  getProductsService,
+  addProductService,
+  deleteProductService,
+} from "./services/products.service.js";
 
 import { messageModel } from "./dao/models/message.model.js";
 
-// const port = 8080;
-// import { connString, secretKey } from "./utils/constants.js";
 import { getVariables } from "./config/dotenv.config.js";
 const { port, connString, secretKey } = getVariables();
 
@@ -83,7 +82,7 @@ io.on("connection", async (socket) => {
 
   //** List products */
   const [limit, page, sort, query] = [1000, 1, "", ""];
-  let productsList = await productMng.getProducts(limit, page, sort, query);
+  let productsList = await getProductsService(limit, page, sort, query);
 
   const products = productsList.payload.map((x) => ({
     id: x._id.toString(),
@@ -95,9 +94,9 @@ io.on("connection", async (socket) => {
 
   //** Add new product */
   socket.on("addProduct", async (data) => {
-    await productMng.addProduct(data);
+    await addProductService(data);
 
-    productsList = await productMng.getProducts(limit, page, sort, query);
+    productsList = await getProductsService(limit, page, sort, query);
     const products = productsList.payload.map((x) => ({
       id: x._id.toString(),
       title: x.title,
@@ -109,9 +108,9 @@ io.on("connection", async (socket) => {
 
   //** Delete existing product */
   socket.on("delProduct", async (data) => {
-    await productMng.deleteProduct(data);
+    await deleteProductService(data);
 
-    productsList = await productMng.getProducts(limit, page, sort, query);
+    productsList = await getProductsService(limit, page, sort, query);
     const products = productsList.payload.map((x) => ({
       id: x._id.toString(),
       title: x.title,
