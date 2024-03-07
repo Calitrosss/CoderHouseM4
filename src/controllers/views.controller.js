@@ -1,4 +1,5 @@
-import { getProductsService, getCartProductsService } from "../services/views.service.js";
+import { getProductsService } from "../services/products.service.js";
+import { getCartProductsService } from "../services/carts.service.js";
 
 export const getHome = (req, res) => {
   // res.render("home", { title: "Home" });
