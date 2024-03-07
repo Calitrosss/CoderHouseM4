@@ -9,6 +9,7 @@ import {
   updateCartProductQty,
   emptyCart,
 } from "../controllers/carts.controller.js";
+import { isUser } from "../middlewares/auth.js";
 
 const cartsRoutes = Router();
 
@@ -16,16 +17,16 @@ cartsRoutes.get("/", getCarts);
 
 cartsRoutes.get("/:cid", getCartProducts);
 
-cartsRoutes.post("/", createCart);
+cartsRoutes.post("/", isUser, createCart);
 
-cartsRoutes.post("/:cid/product/:pid", addCartProduct);
+cartsRoutes.post("/:cid/product/:pid", isUser, addCartProduct);
 
-cartsRoutes.delete("/:cid/product/:pid", removeCartProduct);
+cartsRoutes.delete("/:cid/product/:pid", isUser, removeCartProduct);
 
-cartsRoutes.put("/:cid", updateCartProducts);
+cartsRoutes.put("/:cid", isUser, updateCartProducts);
 
-cartsRoutes.put("/:cid/product/:pid", updateCartProductQty);
+cartsRoutes.put("/:cid/product/:pid", isUser, updateCartProductQty);
 
-cartsRoutes.delete("/:cid", emptyCart);
+cartsRoutes.delete("/:cid", isUser, emptyCart);
 
 export default cartsRoutes;
