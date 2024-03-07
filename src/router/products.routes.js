@@ -6,6 +6,7 @@ import {
   updateProduct,
   deleteProduct,
 } from "../controllers/products.controller.js";
+import { isAdmin } from "../middlewares/auth.js";
 
 const productsRoutes = Router();
 
@@ -13,10 +14,10 @@ productsRoutes.get("/", getProducts);
 
 productsRoutes.get("/:pid", getProductById);
 
-productsRoutes.post("/", addProduct);
+productsRoutes.post("/", isAdmin, addProduct);
 
-productsRoutes.put("/:pid", updateProduct);
+productsRoutes.put("/:pid", isAdmin, updateProduct);
 
-productsRoutes.delete("/:pid", deleteProduct);
+productsRoutes.delete("/:pid", isAdmin, deleteProduct);
 
 export default productsRoutes;
