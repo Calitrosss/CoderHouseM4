@@ -1,7 +1,7 @@
 import passport from "passport";
 import local from "passport-local";
 import { Strategy as GitHubStrategy } from "passport-github2";
-import { usersModel } from "../dao/models/users.model.js";
+import { userModel } from "../dao/models/user.model.js";
 import { createHash, isValidPassword } from "../utils/bcrypt.js";
 
 import { getVariables } from "../config/dotenv.config.js";
@@ -27,7 +27,7 @@ const initializePassport = () => {
             return done(null, false);
           }
 
-          const user = await usersModel.findOne({ email: username });
+          const user = await userModel.findOne({ email: username });
           if (user) {
             console.log("User already exists");
             return done(null, false);
@@ -40,7 +40,7 @@ const initializePassport = () => {
             age,
             password: createHash(password),
           };
-          const result = await usersModel.create(newUser);
+          const result = await userModel.create(newUser);
           done(null, result);
         } catch (error) {
           console.error(error);
@@ -73,7 +73,7 @@ const initializePassport = () => {
             role: "admin",
           };
         } else {
-          user = await usersModel.findOne({ email: username });
+          user = await userModel.findOne({ email: username });
         }
 
         if (!user) {
@@ -106,7 +106,7 @@ const initializePassport = () => {
         try {
           // console.log({ profile });
 
-          const user = await usersModel.findOne({ email: profile._json.email });
+          const user = await userModel.findOne({ email: profile._json.email });
 
           if (!user) {
             const newUser = {
@@ -116,7 +116,7 @@ const initializePassport = () => {
               password: createHash("*GitHubGeneratedPassword*"),
             };
 
-            const result = await usersModel.create(newUser);
+            const result = await userModel.create(newUser);
 
             result.password = "";
             return done(null, result);
@@ -148,7 +148,7 @@ const initializePassport = () => {
         role: "admin",
       };
     } else {
-      user = await usersModel.findById(id);
+      user = await userModel.findById(id);
     }
     done(null, user);
   });
