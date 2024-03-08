@@ -42,4 +42,9 @@ export default class CartsRepository {
     const result = await this.dao.emptyCart(cid);
     return result;
   };
+
+  makePurchase = async (cid) => {
+    const result = await this.dao.makePurchase(cid);
+    return result;
+  };
 }

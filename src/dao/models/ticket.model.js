@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 
 const ticketCollection = "tickets";
 
@@ -19,8 +19,7 @@ const ticketSchema = mongoose.Schema({
   purchase_datetime: {
     type: Date,
     required: true,
-    default: Date.now()
-
+    default: Date.now(),
   },
   amount: {
     type: Number,

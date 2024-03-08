@@ -7,6 +7,7 @@ import {
   updateCartProductsService,
   updateCartProductQtyService,
   emptyCartService,
+  makePurchaseService,
 } from "../services/carts.service.js";
 
 export const getCarts = async (req, res) => {
@@ -115,6 +116,23 @@ export const emptyCart = async (req, res) => {
   try {
     const { cid } = req.params;
     const result = await emptyCartService(cid);
+    if (result.status === "error") {
+      if (result.error?.includes("Not found")) {
+        return res.status(404).send(result);
+      } else {
+        return res.status(400).send(result);
+      }
+    }
+    res.send(result);
+  } catch (error) {
+    res.status(400).send({ status: "error", error: error });
+  }
+};
+
+export const makePurchase = async (req, res) => {
+  try {
+    const { cid } = req.params;
+    const result = await makePurchaseService(cid);
     if (result.status === "error") {
       if (result.error?.includes("Not found")) {
         return res.status(404).send(result);

@@ -39,3 +39,8 @@ export const emptyCartService = async (cid) => {
   const result = await cartsService.emptyCart(cid);
   return result;
 };
+
+export const makePurchaseService = async (cid) => {
+  const result = await cartsService.makePurchase(cid);
+  return result;
+};

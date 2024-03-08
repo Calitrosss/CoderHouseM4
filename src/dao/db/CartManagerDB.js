@@ -159,4 +159,18 @@ export default class CartManager {
       return { status: "error", error: `${error}` };
     }
   }
+
+  async makePurchase(cid) {
+    try {
+      const cart = await this.getCartById(cid);
+      if (!cart) throw `Cart Id "${cid}" Not found`;
+
+      console.log(cart);
+
+      return { status: "success", payload: `Cart ID "${cid}" purchased` };
+    } catch (error) {
+      console.error(`Error emptyCart(): ${error}`);
+      return { status: "error", error: `${error}` };
+    }
+  }
 }

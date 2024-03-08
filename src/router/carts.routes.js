@@ -8,6 +8,7 @@ import {
   updateCartProducts,
   updateCartProductQty,
   emptyCart,
+  makePurchase,
 } from "../controllers/carts.controller.js";
 import { isUser } from "../middlewares/auth.js";
 
@@ -28,5 +29,7 @@ cartsRoutes.put("/:cid", isUser, updateCartProducts);
 cartsRoutes.put("/:cid/product/:pid", isUser, updateCartProductQty);
 
 cartsRoutes.delete("/:cid", isUser, emptyCart);
+
+cartsRoutes.post("/:cid/purchase", isUser, makePurchase);
 
 export default cartsRoutes;
