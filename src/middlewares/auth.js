@@ -10,14 +10,10 @@ export const checkUser = (req, res, next) => {
   next();
 };
 
-export const isAdmin = (req, res, next) => {
-  if (req.session.user?.role !== "admin") return res.status(403).send("<h1>Forbidden</h1>");
+export const authorization = (role) => {
+  return async (req, res, next) => {
+    if (req.session.user?.role !== role) return res.status(403).send("<h1>Forbidden</h1>");
 
-  next();
-};
-
-export const isUser = (req, res, next) => {
-  if (req.session.user?.role !== "user") return res.status(403).send("<h1>Forbidden</h1>");
-
-  next();
+    next();
+  };
 };

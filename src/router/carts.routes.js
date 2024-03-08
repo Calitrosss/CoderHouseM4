@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { authorization } from "../middlewares/auth.js";
 import {
   getCarts,
   getCartProducts,
@@ -10,7 +11,6 @@ import {
   emptyCart,
   makePurchase,
 } from "../controllers/carts.controller.js";
-import { isUser } from "../middlewares/auth.js";
 
 const cartsRoutes = Router();
 
@@ -18,18 +18,18 @@ cartsRoutes.get("/", getCarts);
 
 cartsRoutes.get("/:cid", getCartProducts);
 
-cartsRoutes.post("/", isUser, createCart);
+cartsRoutes.post("/", authorization("user"), createCart);
 
-cartsRoutes.post("/:cid/product/:pid", isUser, addCartProduct);
+cartsRoutes.post("/:cid/product/:pid", authorization("user"), addCartProduct);
 
-cartsRoutes.delete("/:cid/product/:pid", isUser, removeCartProduct);
+cartsRoutes.delete("/:cid/product/:pid", authorization("user"), removeCartProduct);
 
-cartsRoutes.put("/:cid", isUser, updateCartProducts);
+cartsRoutes.put("/:cid", authorization("user"), updateCartProducts);
 
-cartsRoutes.put("/:cid/product/:pid", isUser, updateCartProductQty);
+cartsRoutes.put("/:cid/product/:pid", authorization("user"), updateCartProductQty);
 
-cartsRoutes.delete("/:cid", isUser, emptyCart);
+cartsRoutes.delete("/:cid", authorization("user"), emptyCart);
 
-cartsRoutes.post("/:cid/purchase", isUser, makePurchase);
+cartsRoutes.post("/:cid/purchase", authorization("user"), makePurchase);
 
 export default cartsRoutes;

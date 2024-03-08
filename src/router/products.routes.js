@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { authorization } from "../middlewares/auth.js";
 import {
   getProducts,
   getProductById,
@@ -6,7 +7,6 @@ import {
   updateProduct,
   deleteProduct,
 } from "../controllers/products.controller.js";
-import { isAdmin } from "../middlewares/auth.js";
 
 const productsRoutes = Router();
 
@@ -14,10 +14,10 @@ productsRoutes.get("/", getProducts);
 
 productsRoutes.get("/:pid", getProductById);
 
-productsRoutes.post("/", isAdmin, addProduct);
+productsRoutes.post("/", authorization("admin"), addProduct);
 
-productsRoutes.put("/:pid", isAdmin, updateProduct);
+productsRoutes.put("/:pid", authorization("admin"), updateProduct);
 
-productsRoutes.delete("/:pid", isAdmin, deleteProduct);
+productsRoutes.delete("/:pid", authorization("admin"), deleteProduct);
 
 export default productsRoutes;
