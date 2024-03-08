@@ -132,7 +132,8 @@ export const emptyCart = async (req, res) => {
 export const makePurchase = async (req, res) => {
   try {
     const { cid } = req.params;
-    const result = await makePurchaseService(cid);
+    const purchaser = req.user._id.toString();
+    const result = await makePurchaseService(cid, purchaser);
     if (result.status === "error") {
       if (result.error?.includes("Not found")) {
         return res.status(404).send(result);

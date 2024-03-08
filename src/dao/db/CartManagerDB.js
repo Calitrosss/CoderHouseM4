@@ -1,4 +1,6 @@
 import { cartModel } from "../models/cart.model.js";
+import { productModel } from "../models/product.model.js";
+import { ticketModel } from "../models/ticket.model.js";
 
 export default class CartManager {
   async getCarts() {
@@ -160,16 +162,43 @@ export default class CartManager {
     }
   }
 
-  async makePurchase(cid) {
+  async makePurchase(cid, purchaser) {
     try {
       const cart = await this.getCartById(cid);
       if (!cart) throw `Cart Id "${cid}" Not found`;
 
-      console.log(cart);
+      const cartProducts = await this.getProductsByCartId(cid);
 
-      return { status: "success", payload: `Cart ID "${cid}" purchased` };
+      let itemsPurchased = 0;
+      let amount = 0;
+      cartProducts.forEach(async (cartProduct) => {
+        if (cartProduct.product.stock >= cartProduct.quantity) {
+          itemsPurchased++;
+
+          amount += cartProduct.quantity * cartProduct.product.price;
+
+          cart.products = cart.products.filter(
+            (p) => p.product.toString() !== cartProduct.product._id.toString()
+          );
+
+          const product = await productModel.findOne({ _id: cartProduct.product._id.toString() });
+          product.stock -= cartProduct.quantity;
+          await product.save();
+        }
+      });
+
+      let ticket = {};
+      if (itemsPurchased > 0) {
+        await cart.save();
+        ticket = await ticketModel.create({
+          amount,
+          purchaser,
+        });
+      }
+
+      return { status: "success", payload: { cart, ticket } };
     } catch (error) {
-      console.error(`Error emptyCart(): ${error}`);
+      console.error(`Error makePurchase(): ${error}`);
       return { status: "error", error: `${error}` };
     }
   }
