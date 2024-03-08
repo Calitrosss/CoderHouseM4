@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { chekAuth, checkUser } from "../middlewares/auth.js";
+import { chekAuth, checkUser, isAdmin, isUser } from "../middlewares/auth.js";
 import {
   getHome,
   getRealTimeProducts,
@@ -16,13 +16,13 @@ const viewsRoutes = Router();
 
 viewsRoutes.get("/", getHome);
 
-viewsRoutes.get("/realTimeProducts", chekAuth, getRealTimeProducts);
+viewsRoutes.get("/realTimeProducts", chekAuth, isAdmin, getRealTimeProducts);
 
-viewsRoutes.get("/chat", chekAuth, getChat);
+viewsRoutes.get("/chat", chekAuth, isUser, getChat);
 
 viewsRoutes.get("/products", chekAuth, getProducts);
 
-viewsRoutes.get("/carts/:cid", chekAuth, getCartProducts);
+viewsRoutes.get("/carts/:cid", chekAuth, isUser, getCartProducts);
 
 viewsRoutes.get("/login", checkUser, getLogin);
 

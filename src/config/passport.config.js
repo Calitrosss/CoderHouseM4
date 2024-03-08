@@ -69,6 +69,7 @@ const initializePassport = () => {
             email: username,
             age: 0,
             password: createHash(password),
+            cart: null,
             role: "admin",
           };
         } else {

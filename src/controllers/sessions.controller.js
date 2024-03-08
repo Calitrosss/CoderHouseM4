@@ -15,6 +15,7 @@ export const postLogin = (req, res) => {
     last_name: req.user.last_name,
     email: req.user.email,
     age: req.user.age,
+    cart: req.user.cart,
     role: req.user.role,
   };
 

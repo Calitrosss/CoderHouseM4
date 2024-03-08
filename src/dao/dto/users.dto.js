@@ -5,6 +5,7 @@ export default class UsersDTO {
     this.fullName = `${this.first_name} ${this.last_name}`;
     this.email = user.email;
     this.age = user.age;
+    this.cart = user.cart;
     this.role = user.role;
   }
 }
