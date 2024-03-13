@@ -2,7 +2,7 @@
 
 ## Instalación y configuración
 
-### Instalacón de dependencias
+### Instalación de dependencias
 
 ---
 
@@ -33,4 +33,4 @@ GITHUB_CALLBACK_URL=
 ---
 
 - Se agrega ruta "/api/mocks/mockingproducts" para mocks de productos
-- Se agrega generador de errores personalizados y se implemente en los controladores de products y carts
+- Se agrega generador de errores personalizados y se implementa en los controladores de products y carts
