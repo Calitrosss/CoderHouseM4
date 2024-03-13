@@ -1,4 +1,4 @@
-# 3ra. Pre-entrega Proyecto Final
+# Desafío clase 32
 
 ---
 
@@ -16,3 +16,8 @@ GITHUB_CLIENT_ID=
 GITHUB_CLIENT_SECRET=
 GITHUB_CALLBACK_URL=
 ```
+
+---
+
+- Se agrega ruta "/mockingproducts" para mocks de productos
+- Se implementa generador de errores personalizados
