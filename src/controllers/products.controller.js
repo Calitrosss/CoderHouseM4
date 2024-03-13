@@ -7,7 +7,7 @@ import {
 } from "../services/products.service.js";
 
 import CustomError from "../errors/CustomError.js";
-import { productErrorTypeInfo, productInvalidParamInfo } from "../errors/ProductErrorInfo.js";
+import { productErrorTypeInfo } from "../errors/ProductErrorInfo.js";
 import ErrorEnum from "../errors/ErrorEnum.js";
 
 export const getProducts = async (req, res, next) => {
@@ -43,36 +43,27 @@ export const addProduct = async (req, res, next) => {
 
     if (
       !title ||
+      title.trim().length === 0 ||
       !description ||
+      description.trim().length === 0 ||
       !code ||
-      !price ||
-      !status ||
-      !stock ||
+      code.trim().length === 0 ||
       !category ||
+      category.trim().length === 0 ||
+      !status ||
+      typeof status !== "boolean" ||
+      !price ||
       typeof price !== "number" ||
+      price < 0 ||
+      !stock ||
       typeof stock !== "number" ||
-      typeof status !== "boolean"
+      stock < 0
     )
       await CustomError.createError({
         name: "Product creation error",
         cause: `Error addProduct(): ${productErrorTypeInfo(req.body)}`,
         message: "Error trying to create Product",
         code: ErrorEnum.INVALID_TYPE_ERROR,
-      });
-
-    if (
-      title.trim().length === 0 ||
-      description.trim().length === 0 ||
-      code.trim().length === 0 ||
-      category.trim().length === 0 ||
-      price < 0 ||
-      stock < 0
-    )
-      await CustomError.createError({
-        name: "Product creation error",
-        cause: `Error addProduct(): ${productInvalidParamInfo(req.body)}`,
-        message: "Error trying to create Product",
-        code: ErrorEnum.INVALID_PARAM,
       });
 
     const result = await addProductService(req.body);
@@ -94,36 +85,27 @@ export const updateProduct = async (req, res, next) => {
 
     if (
       !title ||
+      title.trim().length === 0 ||
       !description ||
+      description.trim().length === 0 ||
       !code ||
-      !price ||
-      !status ||
-      !stock ||
+      code.trim().length === 0 ||
       !category ||
+      category.trim().length === 0 ||
+      !status ||
+      typeof status !== "boolean" ||
+      !price ||
       typeof price !== "number" ||
+      price < 0 ||
+      !stock ||
       typeof stock !== "number" ||
-      typeof status !== "boolean"
+      stock < 0
     )
       await CustomError.createError({
         name: "Product update error",
         cause: `Error updateProduct(): ${productErrorTypeInfo(req.body)}`,
         message: "Error trying to update Product",
         code: ErrorEnum.INVALID_TYPE_ERROR,
-      });
-
-    if (
-      title.trim().length === 0 ||
-      description.trim().length === 0 ||
-      code.trim().length === 0 ||
-      category.trim().length === 0 ||
-      price < 0 ||
-      stock < 0
-    )
-      await CustomError.createError({
-        name: "Product update error",
-        cause: `Error updateProduct(): ${productInvalidParamInfo(req.body)}`,
-        message: "Error trying to update Product",
-        code: ErrorEnum.INVALID_PARAM,
       });
 
     const result = await updateProductService({ ...req.body, id });
