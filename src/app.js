@@ -11,6 +11,8 @@ import cartsRoutes from "./router/carts.routes.js";
 import sessionsRoutes from "./router/sessions.routes.js";
 import mocksRoutes from "./router/mocks.routes.js";
 
+import { ErrorHandler } from "./middlewares/error.js";
+
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 
@@ -69,6 +71,9 @@ app.use("/api/products", productsRoutes);
 app.use("/api/carts", cartsRoutes);
 app.use("/api/sessions", sessionsRoutes);
 app.use("/api/mocks", mocksRoutes);
+
+//** Error Handler Middleware */
+app.use(ErrorHandler);
 
 //** Http Server Listen */
 const httpServer = app.listen(port, async () => {
