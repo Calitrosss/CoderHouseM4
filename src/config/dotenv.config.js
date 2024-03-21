@@ -4,6 +4,7 @@ export const getVariables = () => {
   dotenv.config();
 
   return {
+    environment: process.env.ENVIRONMENT,
     port: process.env.PORT,
     connString: process.env.MONGO_URL,
     secretKey: process.env.SECRET_KEY,
