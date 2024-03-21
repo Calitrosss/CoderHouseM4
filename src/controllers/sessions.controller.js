@@ -6,7 +6,7 @@ export const postRegister = (req, res) => {
 
 export const postLogin = (req, res) => {
   if (!req.user) {
-    console.error("Error with credentials");
+    req.logger.info(`${new Date().toLocaleString()} => Error with credentials`);
     return res.redirect("/failtologin");
   }
 
@@ -29,7 +29,7 @@ export const postLogout = (req, res) => {
     });
     res.send({ redirect: "http://localhost:8080/login" });
   } catch (error) {
-    console.error(`${error}`);
+    req.logger.error(`${new Date().toLocaleString()} => ${error}`);
     res.status(400).send({ error: `${error}` });
   }
 };
@@ -44,7 +44,7 @@ export const getCurrent = (req, res) => {
     if (!req.session.user) return res.status(401).send({ error: "Error with credentials" });
     res.send(new UsersDTO(req.session.user));
   } catch (error) {
-    console.error(`${error}`);
+    req.logger.error(`${new Date().toLocaleString()} => ${error}`);
     res.status(400).send({ error: `${error}` });
   }
 };

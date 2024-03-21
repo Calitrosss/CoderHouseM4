@@ -9,7 +9,6 @@ export default class CartManager {
 
       return cartsDbObj;
     } catch (error) {
-      console.error(`Error getCarts(): ${error}`);
       return [];
     }
   }
@@ -20,7 +19,6 @@ export default class CartManager {
 
       return cart;
     } catch (error) {
-      console.error(`Error getCartById(): ${error}`);
       return null;
     }
   }
@@ -33,7 +31,6 @@ export default class CartManager {
 
       return cart.products;
     } catch (error) {
-      console.error(`Error getProductsByCartId(): ${error}`);
       return undefined;
     }
   }
@@ -43,14 +40,9 @@ export default class CartManager {
       const newCart = {
         products: [],
       };
-
       const result = await cartModel.create(newCart);
-
-      console.log(`Success: Cart "${result._id}" created`);
-
       return { status: "success", payload: result };
     } catch (error) {
-      console.error(`Error createCart(): ${error}`);
       return { status: "error", error: `${error}` };
     }
   }
@@ -72,12 +64,8 @@ export default class CartManager {
       }
 
       const result = await cartModel.updateOne({ _id: cid }, { products });
-
-      console.log(`Success: Product ID "${pid}" added to Cart ID "${cid}"`);
-
       return { status: "success", payload: `Product ID "${pid}" added to Cart ID "${cid}"` };
     } catch (error) {
-      console.error(`Error addProductToCart(): ${error}`);
       return { status: "error", error: `${error}` };
     }
   }
@@ -97,12 +85,8 @@ export default class CartManager {
       }
 
       const result = await cartModel.updateOne({ _id: cid }, { products });
-
-      console.log(`Success: Product ID "${pid}" removed from Cart ID "${cid}"`);
-
       return { status: "success", payload: `Product ID "${pid}" removed from Cart ID "${cid}"` };
     } catch (error) {
-      console.error(`Error removeProductFromCart(): ${error}`);
       return { status: "error", error: `${error}` };
     }
   }
@@ -116,7 +100,6 @@ export default class CartManager {
 
       return { status: "success", payload: `Cart ID "${cid}" updated with products` };
     } catch (error) {
-      console.error(`Error updateCartProducts(): ${error}`);
       return { status: "error", error: `${error}` };
     }
   }
@@ -141,7 +124,6 @@ export default class CartManager {
 
       return { status: "success", payload: `Product ID "${pid}" updated in Cart ID "${cid}"` };
     } catch (error) {
-      console.error(`Error updateCartProductQuantity(): ${error}`);
       return { status: "error", error: `${error}` };
     }
   }
@@ -157,7 +139,6 @@ export default class CartManager {
 
       return { status: "success", payload: `Cart ID "${cid}" emptied` };
     } catch (error) {
-      console.error(`Error emptyCart(): ${error}`);
       return { status: "error", error: `${error}` };
     }
   }
@@ -198,7 +179,6 @@ export default class CartManager {
 
       return { status: "success", payload: { cart, ticket } };
     } catch (error) {
-      console.error(`Error makePurchase(): ${error}`);
       return { status: "error", error: `${error}` };
     }
   }

@@ -21,7 +21,7 @@ export const getProducts = async (req, res) => {
     const productsList = await getProductsService(limit, page, sort, query);
     res.render("products", { title: "Products", productsList, user });
   } catch (error) {
-    console.error(error);
+    req.logger.error(`${new Date().toLocaleString()} => ${error}`);
   }
 };
 
@@ -31,7 +31,7 @@ export const getCartProducts = async (req, res) => {
     const products = await getCartProductsService(cid);
     res.render("cart", { title: "Cart", products });
   } catch (error) {
-    console.error(error);
+    req.logger.error(`${new Date().toLocaleString()} => ${error}`);
   }
 };
 

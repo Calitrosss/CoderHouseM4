@@ -26,7 +26,6 @@ export default class ProductManager {
 
       return { status: "success", payload, ...result };
     } catch (error) {
-      console.error(`Error getProducts(): ${error}`);
       return [];
     }
   }
@@ -39,7 +38,6 @@ export default class ProductManager {
 
       return product;
     } catch (error) {
-      console.error(`Error getProductById(): ${error}`);
       return undefined;
     }
   }
@@ -61,12 +59,8 @@ export default class ProductManager {
       };
 
       const result = await productModel.create(newProduct);
-
-      console.log(`Success: Code "${newProduct.code}" added`);
-
       return { status: "success", payload: result };
     } catch (error) {
-      console.error(`Error addProduct(): ${error}`);
       return { status: "error", error: `${error}` };
     }
   }
@@ -104,11 +98,8 @@ export default class ProductManager {
       const result = await productModel.updateOne({ _id: id }, updateProduct);
 
       if (!result.matchedCount) return { status: "error", error: `Product Id "${id}" Not found` };
-
-      console.log(`Success: Product ID "${id}" updated`);
       return { status: "success", payload: `Product ID "${id}" updated` };
     } catch (error) {
-      console.error(`Error updateProduct(): ${error}`);
       return { status: "error", error: `${error}` };
     }
   }
@@ -119,10 +110,8 @@ export default class ProductManager {
 
       if (!result.deletedCount) return { status: "error", error: `Product Id "${id}" Not found` };
 
-      console.log(`Success: Product ID "${id}" deleted`);
       return { status: "success", payload: `Success: Product ID "${id}" deleted` };
     } catch (error) {
-      console.error(`Error deleteProduct(): ${error}`);
       return { status: "error", error: `${error}` };
     }
   }
