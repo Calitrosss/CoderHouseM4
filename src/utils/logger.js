@@ -62,6 +62,7 @@ export const addLogger = (req, res, next) => {
       req.logger = prodLogger;
       break;
     default:
+      req.logger = devLogger;
       throw new Error("Environment doesn't exists");
   }
 
