@@ -12,6 +12,7 @@ import sessionsRoutes from "./router/sessions.routes.js";
 import mocksRoutes from "./router/mocks.routes.js";
 
 import { ErrorHandler } from "./middlewares/error.js";
+import { addLogger } from "./utils/logger.js";
 
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
@@ -64,6 +65,9 @@ app.use(
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
+
+//** Logger */
+app.use(addLogger);
 
 //** Routes configurations */
 app.use("/", viewsRoutes);

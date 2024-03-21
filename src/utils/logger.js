@@ -65,9 +65,7 @@ export const addLogger = (req, res, next) => {
       throw new Error("Environment doesn't exists");
   }
 
-  req.logger.http(
-    `${req.method} en ${req.url} - ${new Date().toLocaleString()} (${process.env.NODE_ENV})`
-  );
+  req.logger.http(`${req.method} en ${req.url} - ${new Date().toLocaleString()} (${environment})`);
 
   next();
 };
