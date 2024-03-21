@@ -1,4 +1,4 @@
-# Desafío clase 32
+# Desafío clase 34
 
 ## Instalación y configuración
 
@@ -16,6 +16,7 @@
 - Agregar archivo .env en el directorio raíz con los siguientes parámetros:
 
 ```
+ENVIRONMENT=
 PORT=
 MONGO_URL=
 SECRET_KEY=
@@ -28,9 +29,17 @@ GITHUB_CALLBACK_URL=
 
 ## Aspectos incluídos
 
-### Mocking y manejo de errores
+### Winston Logger
 
 ---
 
-- Se agrega ruta "/api/mocks/mockingproducts" para mocks de productos
-- Se agrega generador de errores personalizados y se implementa en los controladores de products y carts
+- Se define un sistema de niveles que tenga la siguiente prioridad (de menor a mayor): debug, http, info, warning, error, fatal
+- Se implemente un logger para ambientes de desarrollo y producción
+- Logger de desarrollo sólo a consola y de nivel debug
+- Logger de producción a consola de nivel info y a archivo de nivel error
+- Se agrega ruta "/api/loggerTest" para pruebas de logger
+- Variable de entorno "ENVIRONMENT" admite los siguientes valores:
+  - development
+  - production
+- El logger predeterminado será el de desarrollo en caso de no existir la variable de entorno "ENVIRONMENT" o si no tiene valor correcto
+- Se sustituyen los console.log() más críticos para usar el logger en su lugar
