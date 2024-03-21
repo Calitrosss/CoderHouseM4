@@ -18,7 +18,7 @@ const customLevelOptions = {
     warning: "yellow",
     info: "blue",
     http: "cyan",
-    debug: "white",
+    debug: "whiteBG",
   },
 };
 
@@ -46,7 +46,7 @@ const prodLogger = winston.createLogger({
       ),
     }),
     new winston.transports.File({
-      filename: "../../errors.log",
+      filename: "./errors.log",
       level: "error",
       format: winston.format.simple(),
     }),

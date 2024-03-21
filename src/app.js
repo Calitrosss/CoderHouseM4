@@ -10,6 +10,7 @@ import productsRoutes from "./router/products.routes.js";
 import cartsRoutes from "./router/carts.routes.js";
 import sessionsRoutes from "./router/sessions.routes.js";
 import mocksRoutes from "./router/mocks.routes.js";
+import loggerRoutes from "./router/logger.routes.js";
 
 import { ErrorHandler } from "./middlewares/error.js";
 import { addLogger } from "./utils/logger.js";
@@ -75,6 +76,7 @@ app.use("/api/products", productsRoutes);
 app.use("/api/carts", cartsRoutes);
 app.use("/api/sessions", sessionsRoutes);
 app.use("/api/mocks", mocksRoutes);
+app.use("/api/loggerTest", loggerRoutes);
 
 //** Error Handler Middleware */
 app.use(ErrorHandler);
