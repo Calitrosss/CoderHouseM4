@@ -13,5 +13,7 @@ export const getVariables = () => {
     githubClientId: process.env.GITHUB_CLIENT_ID,
     githubClientSecret: process.env.GITHUB_CLIENT_SECRET,
     githubCallbackUrl: process.env.GITHUB_CALLBACK_URL,
+    googleAppEmail: process.env.GOOGLE_APP_EMAIL,
+    googleAppPass: process.env.GOOGLE_APP_PASS,
   };
 };
