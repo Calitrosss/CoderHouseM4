@@ -20,7 +20,7 @@ export const updateProductService = async (product) => {
   return result;
 };
 
-export const deleteProductService = async (id) => {
-  const result = await productsService.deleteProduct(id);
+export const deleteProductService = async (id, uid, role) => {
+  const result = await productsService.deleteProduct(id, uid, role);
   return result;
 };

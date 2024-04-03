@@ -13,13 +13,13 @@ export default class CartsRepository {
     return products;
   };
 
-  createCart = async () => {
-    const result = await this.dao.createCart();
+  createCart = async (data) => {
+    const result = await this.dao.createCart(data);
     return result;
   };
 
-  addProductToCart = async (cid, pid, quantity) => {
-    const result = await this.dao.addProductToCart(cid, pid, quantity);
+  addProductToCart = async (cid, pid, quantity, uid) => {
+    const result = await this.dao.addProductToCart(cid, pid, quantity, uid);
     return result;
   };
 

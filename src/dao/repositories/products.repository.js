@@ -23,8 +23,8 @@ export default class ProductsRepository {
     return result;
   };
 
-  deleteProduct = async (id) => {
-    const result = await this.dao.deleteProduct(id);
+  deleteProduct = async (id, uid, role) => {
+    const result = await this.dao.deleteProduct(id, uid, role);
     return result;
   };
 }

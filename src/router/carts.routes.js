@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authorization } from "../middlewares/auth.js";
+import { authorization, applyPolicy } from "../middlewares/auth.js";
 import {
   getCarts,
   getCartProducts,
@@ -18,18 +18,18 @@ cartsRoutes.get("/", getCarts);
 
 cartsRoutes.get("/:cid", getCartProducts);
 
-cartsRoutes.post("/", authorization("user"), createCart);
+cartsRoutes.post("/", applyPolicy(["user", "premium"]), createCart);
 
-cartsRoutes.post("/:cid/product/:pid", authorization("user"), addCartProduct);
+cartsRoutes.post("/:cid/product/:pid", applyPolicy(["user", "premium"]), addCartProduct);
 
-cartsRoutes.delete("/:cid/product/:pid", authorization("user"), removeCartProduct);
+cartsRoutes.delete("/:cid/product/:pid", applyPolicy(["user", "premium"]), removeCartProduct);
 
-cartsRoutes.put("/:cid", authorization("user"), updateCartProducts);
+cartsRoutes.put("/:cid", applyPolicy(["user", "premium"]), updateCartProducts);
 
-cartsRoutes.put("/:cid/product/:pid", authorization("user"), updateCartProductQty);
+cartsRoutes.put("/:cid/product/:pid", applyPolicy(["user", "premium"]), updateCartProductQty);
 
-cartsRoutes.delete("/:cid", authorization("user"), emptyCart);
+cartsRoutes.delete("/:cid", applyPolicy(["user", "premium"]), emptyCart);
 
-cartsRoutes.post("/:cid/purchase", authorization("user"), makePurchase);
+cartsRoutes.post("/:cid/purchase", applyPolicy(["user", "premium"]), makePurchase);
 
 export default cartsRoutes;

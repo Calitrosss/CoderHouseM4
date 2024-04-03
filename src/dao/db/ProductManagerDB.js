@@ -42,7 +42,7 @@ export default class ProductManager {
     }
   }
 
-  async addProduct({ title, description, code, price, stock, category, thumbnails }) {
+  async addProduct({ title, description, code, price, stock, category, thumbnails, uid, role }) {
     try {
       if (!price || price < 0) throw "Price is required";
       if (!stock || stock < 0) throw "Stock is required";
@@ -56,6 +56,7 @@ export default class ProductManager {
         stock,
         category,
         thumbnails: thumbnails || [],
+        owner: role === "premium" ? uid : "admin",
       };
 
       const result = await productModel.create(newProduct);
@@ -75,6 +76,8 @@ export default class ProductManager {
     stock,
     category,
     thumbnails,
+    uid,
+    role,
   }) {
     try {
       const updateProduct = {
@@ -95,6 +98,12 @@ export default class ProductManager {
       if (updateProduct.stock < 0) throw "Stock is required";
       if (updateProduct.category?.trim().length === 0) throw "Category is required";
 
+      const product = await productModel.findOne({ _id: id });
+      if (!product) return { status: "error", error: `Product Id "${id}" Not found` };
+
+      if (role === "premium" && product.owner !== uid.toString())
+        return { status: "error", error: `Forbidden. The user is not the owner.` };
+
       const result = await productModel.updateOne({ _id: id }, updateProduct);
 
       if (!result.matchedCount) return { status: "error", error: `Product Id "${id}" Not found` };
@@ -104,8 +113,14 @@ export default class ProductManager {
     }
   }
 
-  async deleteProduct(id) {
+  async deleteProduct(id, uid, role) {
     try {
+      const product = await productModel.findOne({ _id: id });
+      if (!product) return { status: "error", error: `Product Id "${id}" Not found` };
+
+      if (role === "premium" && product.owner !== uid.toString())
+        return { status: "error", error: `Forbidden. The user is not the owner.` };
+
       const result = await productModel.deleteOne({ _id: id });
 
       if (!result.deletedCount) return { status: "error", error: `Product Id "${id}" Not found` };

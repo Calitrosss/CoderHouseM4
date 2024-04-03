@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema({
     ref: "carts",
     default: null,
   },
-  role: { type: String, required: true, enum: ["admin", "user"], default: "user" },
+  role: { type: String, required: true, enum: ["admin", "user", "premium"], default: "user" },
 });
 
 export const userModel = mongoose.model(userCollection, userSchema);

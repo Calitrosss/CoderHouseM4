@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authorization } from "../middlewares/auth.js";
+import { authorization, applyPolicy } from "../middlewares/auth.js";
 import {
   getProducts,
   getProductById,
@@ -14,10 +14,10 @@ productsRoutes.get("/", getProducts);
 
 productsRoutes.get("/:pid", getProductById);
 
-productsRoutes.post("/", authorization("admin"), addProduct);
+productsRoutes.post("/", applyPolicy(["admin", "premium"]), addProduct);
 
-productsRoutes.put("/:pid", authorization("admin"), updateProduct);
+productsRoutes.put("/:pid", applyPolicy(["admin", "premium"]), updateProduct);
 
-productsRoutes.delete("/:pid", authorization("admin"), deleteProduct);
+productsRoutes.delete("/:pid", applyPolicy(["admin", "premium"]), deleteProduct);
 
 export default productsRoutes;

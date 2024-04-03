@@ -1,5 +1,6 @@
 import { cartModel } from "../models/cart.model.js";
 import { productModel } from "../models/product.model.js";
+import { userModel } from "../models/user.model.js";
 import { ticketModel } from "../models/ticket.model.js";
 
 export default class CartManager {
@@ -35,20 +36,38 @@ export default class CartManager {
     }
   }
 
-  async createCart() {
+  async createCart({ uid }) {
     try {
-      const newCart = {
-        products: [],
-      };
-      const result = await cartModel.create(newCart);
+      const user = await userModel.findOne({ _id: uid });
+      if (!user) return { status: "error", error: `User not found` };
+
+      if (!user.cart) {
+        const newCart = {
+          products: [],
+        };
+        const result = await cartModel.create(newCart);
+        await userModel.updateOne({ _id: user._id }, { cart: result._id });
+        return { status: "success", payload: result };
+      }
+
+      const result = await cartModel.findOne({ _id: user.cart });
       return { status: "success", payload: result };
     } catch (error) {
       return { status: "error", error: `${error}` };
     }
   }
 
-  async addProductToCart(cid, pid, quantity) {
+  async addProductToCart(cid, pid, quantity, uid) {
     try {
+      const user = await userModel.findOne({ _id: uid });
+      if (!user) return { status: "error", error: `User not found` };
+
+      const productDetail = await productModel.findOne({ _id: pid });
+      if (!productDetail) return { status: "error", error: `Product not found` };
+
+      if (productDetail.owner === user._id.toString())
+        return { status: "error", error: `User owns the product` };
+
       const qty = quantity || 1;
 
       const cart = await this.getCartById(cid);

@@ -10,13 +10,13 @@ export const getCartProductsService = async (id) => {
   return products;
 };
 
-export const createCartService = async () => {
-  const result = await cartsService.createCart();
+export const createCartService = async (data) => {
+  const result = await cartsService.createCart(data);
   return result;
 };
 
-export const addCartProductService = async (cid, pid, quantity) => {
-  const result = await cartsService.addProductToCart(cid, pid, quantity);
+export const addCartProductService = async (cid, pid, quantity, uid) => {
+  const result = await cartsService.addProductToCart(cid, pid, quantity, uid);
   return result;
 };
 

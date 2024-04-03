@@ -43,10 +43,10 @@ export const getGitHubCallback = (req, res) => {
   res.redirect("/");
 };
 
-export const getCurrent = (req, res) => {
+export const getCurrent = async (req, res) => {
   try {
     if (!req.session.user) return res.status(401).send({ error: "Error with credentials" });
-    res.send(new UsersDTO(req.session.user));
+    res.send(new UsersDTO(req.user));
   } catch (error) {
     req.logger.error(`${new Date().toLocaleString()} => ${error}`);
     res.status(400).send({ error: `${error}` });

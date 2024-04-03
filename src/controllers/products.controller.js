@@ -66,7 +66,11 @@ export const addProduct = async (req, res, next) => {
         code: ErrorEnum.INVALID_TYPE_ERROR,
       });
 
-    const result = await addProductService(req.body);
+    const result = await addProductService({
+      ...req.body,
+      uid: req.user?._id,
+      role: req.session.user?.role,
+    });
     if (result.status === "error") return res.status(400).send(result);
     res.status(201).send(result);
   } catch (error) {
@@ -108,7 +112,12 @@ export const updateProduct = async (req, res, next) => {
         code: ErrorEnum.INVALID_TYPE_ERROR,
       });
 
-    const result = await updateProductService({ ...req.body, id });
+    const result = await updateProductService({
+      ...req.body,
+      id,
+      uid: req.user?._id,
+      role: req.session.user?.role,
+    });
 
     if (result.status === "error") {
       if (result.error?.includes("Not found")) {
@@ -140,7 +149,10 @@ export const updateProduct = async (req, res, next) => {
 export const deleteProduct = async (req, res, next) => {
   try {
     const id = req.params.pid;
-    const result = await deleteProductService(id);
+    const uid = req.user?._id;
+    const role = req.session.user?.role;
+
+    const result = await deleteProductService(id, uid, role);
     if (result.status === "error") {
       if (result.error?.includes("Not found")) {
         await CustomError.createError({

@@ -17,3 +17,11 @@ export const authorization = (role) => {
     next();
   };
 };
+
+export const applyPolicy = (roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.session.user?.role)) return res.status(403).send("<h1>Forbidden</h1>");
+
+    next();
+  };
+};

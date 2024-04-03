@@ -41,7 +41,7 @@ export const getCartProducts = async (req, res, next) => {
 
 export const createCart = async (req, res, next) => {
   try {
-    const result = await createCartService();
+    const result = await createCartService({ uid: req.user?._id });
     if (result.status === "error")
       await CustomError.createError({
         name: "Create cart error",
@@ -49,6 +49,10 @@ export const createCart = async (req, res, next) => {
         message: "Error trying to create Cart",
         code: ErrorEnum.DATABASE_ERROR,
       });
+
+    req.user.cart = result._id;
+    req.session.user.cart = result._id;
+
     res.send(result);
   } catch (error) {
     next(error);
@@ -59,7 +63,7 @@ export const addCartProduct = async (req, res, next) => {
   try {
     const { cid, pid } = req.params;
     const { quantity } = req.body;
-    const result = await addCartProductService(cid, pid, quantity);
+    const result = await addCartProductService(cid, pid, quantity, req.user?._id);
     if (result.status === "error") {
       if (result.error?.includes("Not found")) {
         await CustomError.createError({
@@ -70,7 +74,7 @@ export const addCartProduct = async (req, res, next) => {
         });
       } else {
         await CustomError.createError({
-          name: "Add Cart products errorr",
+          name: "Add Cart products error",
           cause: `Error createCart(): ${result.error}`,
           message: "Error trying to add product to Cart",
           code: ErrorEnum.DATABASE_ERROR,
