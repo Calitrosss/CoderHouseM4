@@ -1,4 +1,8 @@
 import UsersDTO from "../dao/dto/users.dto.js";
+import { googleSendSimpleMail } from "../utils/mailing.js";
+
+import { userModel } from "../dao/models/user.model.js";
+import { createHash } from "../utils/bcrypt.js";
 
 export const postRegister = (req, res) => {
   res.redirect("/login");
@@ -46,5 +50,42 @@ export const getCurrent = (req, res) => {
   } catch (error) {
     req.logger.error(`${new Date().toLocaleString()} => ${error}`);
     res.status(400).send({ error: `${error}` });
+  }
+};
+
+export const sendResetPassLink = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    await googleSendSimpleMail({
+      from: "eCommerce",
+      to: email,
+      subject: "eCommerce - Restablecer contraseña",
+      html: `
+      Por favor ingresa a este link para que puedas reestablecer tu contraseña: <a href="http://localhost:8080/reset-pass" target="_blank" rel="noopener noreferrer">LINK</a>
+      `,
+    });
+
+    res.redirect("/login");
+  } catch (error) {
+    req.logger.error(`${new Date().toLocaleString()} => ${error}`);
+    res.redirect("/forgot-pass");
+  }
+};
+
+export const putResetPass = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await userModel.findOne({ email });
+
+    if (user) {
+      await userModel.updateOne({ _id: user._id }, { password: createHash(password) });
+    }
+
+    res.send({ status: "success", message: "OK" });
+  } catch (error) {
+    req.logger.error(`${new Date().toLocaleString()} => ${error}`);
+    res.status(400).send({ status: "error", error: `${error}` });
   }
 };

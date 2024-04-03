@@ -50,3 +50,11 @@ export const getFailRegister = (req, res) => {
 export const getFailLogin = (req, res) => {
   res.render("failtologin", { title: "Login Error" });
 };
+
+export const getForgotPass = (req, res) => {
+  res.render("forgot-pass", { title: "Forgot Password" });
+};
+
+export const getResetPass = (req, res) => {
+  res.render("reset-pass", { title: "Reset Password" });
+};

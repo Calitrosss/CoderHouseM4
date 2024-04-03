@@ -10,6 +10,8 @@ import {
   getRegister,
   getFailRegister,
   getFailLogin,
+  getForgotPass,
+  getResetPass,
 } from "../controllers/views.controller.js";
 
 const viewsRoutes = Router();
@@ -31,5 +33,9 @@ viewsRoutes.get("/register", checkUser, getRegister);
 viewsRoutes.get("/failtoregister", getFailRegister);
 
 viewsRoutes.get("/failtologin", getFailLogin);
+
+viewsRoutes.get("/forgot-pass", getForgotPass);
+
+viewsRoutes.get("/reset-pass", getResetPass);
 
 export default viewsRoutes;

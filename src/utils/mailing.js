@@ -3,7 +3,7 @@ import nodemailer from "nodemailer";
 import { getVariables } from "../config/dotenv.config.js";
 const { googleAppEmail, googleAppPass } = getVariables();
 
-const googleEmailTransport = nodemailer.createTransport({
+const googleMailTransport = nodemailer.createTransport({
   service: "gmail",
   port: 587,
   auth: {
@@ -12,9 +12,9 @@ const googleEmailTransport = nodemailer.createTransport({
   },
 });
 
-const googleSendSimpleMail = async ({ from, to, subject, html, attachments = [] }) => {
+export const googleSendSimpleMail = async ({ from, to, subject, html, attachments = [] }) => {
   try {
-    const result = await googleEmailTransport.sendMail({
+    const result = await googleMailTransport.sendMail({
       from,
       to,
       subject,
@@ -27,5 +27,3 @@ const googleSendSimpleMail = async ({ from, to, subject, html, attachments = [] 
     return { status: "error", error: `${error}` };
   }
 };
-
-export default googleSendSimpleMail;

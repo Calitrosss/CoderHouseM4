@@ -6,6 +6,8 @@ import {
   postLogout,
   getGitHubCallback,
   getCurrent,
+  sendResetPassLink,
+  putResetPass,
 } from "../controllers/sessions.controller.js";
 
 const sessionsRoutes = Router();
@@ -33,5 +35,9 @@ sessionsRoutes.get(
 );
 
 sessionsRoutes.get("/current", getCurrent);
+
+sessionsRoutes.post("/forgot-pass", sendResetPassLink);
+
+sessionsRoutes.put("/reset-pass", putResetPass);
 
 export default sessionsRoutes;
