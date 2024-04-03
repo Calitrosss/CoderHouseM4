@@ -15,7 +15,7 @@
 
 - Agregar archivo .env en el directorio raíz con los siguientes parámetros:
 
-```
+```env
 ENVIRONMENT=
 PORT=
 MONGO_URL=
