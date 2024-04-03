@@ -21,9 +21,25 @@ btnReset.addEventListener("click", async (e) => {
       throw new Error("Ocurrió un error al procesar la solicitud.");
     }
 
+    await Swal.fire({
+      title: `Se restableció la contraseña`,
+      toast: true,
+      position: "top-end",
+      icon: "success",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+
     window.location.href = "/login";
   } catch (error) {
     console.error("Error:", error);
-    window.location.href = "/login";
+    Swal.fire({
+      title: `${error}`,
+      toast: true,
+      position: "top-end",
+      icon: "error",
+      showConfirmButton: false,
+      timer: 2500,
+    });
   }
 });

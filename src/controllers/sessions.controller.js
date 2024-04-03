@@ -79,9 +79,11 @@ export const putResetPass = async (req, res) => {
 
     const user = await userModel.findOne({ email });
 
-    if (user) {
-      await userModel.updateOne({ _id: user._id }, { password: createHash(password) });
+    if (!user) {
+      throw new Error(`Ocurrió un error al procesar la solicitud. Usuario "${email}" no existe.`);
     }
+
+    await userModel.updateOne({ _id: user._id }, { password: createHash(password) });
 
     res.send({ status: "success", message: "OK" });
   } catch (error) {
