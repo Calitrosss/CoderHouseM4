@@ -2,7 +2,7 @@ import UsersDTO from "../dao/dto/users.dto.js";
 import { googleSendSimpleMail } from "../utils/mailing.js";
 
 import { userModel } from "../dao/models/user.model.js";
-import { createHash } from "../utils/bcrypt.js";
+import { createHash, isValidPassword } from "../utils/bcrypt.js";
 
 export const postRegister = (req, res) => {
   res.redirect("/login");
@@ -80,7 +80,14 @@ export const putResetPass = async (req, res) => {
     const user = await userModel.findOne({ email });
 
     if (!user) {
-      throw new Error(`Ocurrió un error al procesar la solicitud. Usuario "${email}" no existe.`);
+      throw new Error(`Usuario "${email}" no existe.`);
+    }
+
+    if (isValidPassword(user, password)) {
+      return res.status(403).send({
+        status: "error",
+        error: `No puede usar la contraseña actual.`,
+      });
     }
 
     await userModel.updateOne({ _id: user._id }, { password: createHash(password) });

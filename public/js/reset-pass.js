@@ -17,8 +17,23 @@ btnReset.addEventListener("click", async (e) => {
       body: JSON.stringify(data),
     });
 
+    const responseData = await response.json();
+
     if (!response.ok) {
-      throw new Error("Ocurrió un error al procesar la solicitud.");
+      switch (response.status) {
+        case 403:
+          return Swal.fire({
+            title: `${responseData.error ?? "Ocurrió un error al procesar la solicitud."}`,
+            toast: true,
+            position: "top-end",
+            icon: "warning",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+
+        default:
+          throw new Error("Ocurrió un error al procesar la solicitud.");
+      }
     }
 
     await Swal.fire({
@@ -32,7 +47,6 @@ btnReset.addEventListener("click", async (e) => {
 
     window.location.href = "/login";
   } catch (error) {
-    console.error("Error:", error);
     Swal.fire({
       title: `${error}`,
       toast: true,
