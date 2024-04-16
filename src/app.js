@@ -4,6 +4,8 @@ import { Server } from "socket.io";
 import mongoose from "mongoose";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUIExpress from "swagger-ui-express";
 
 import viewsRoutes from "./router/views.routes.js";
 import productsRoutes from "./router/products.routes.js";
@@ -25,12 +27,18 @@ import {
   deleteProductService,
 } from "./services/products.service.js";
 
+import { swaggerConfiguration } from "./config/swagger-configuration.js";
+
 import { messageModel } from "./dao/models/message.model.js";
 
 import { getVariables } from "./config/dotenv.config.js";
 const { port, connString, secretKey } = getVariables();
 
 const app = express();
+
+//** Swagger configuration */
+const specs = swaggerJSDoc(swaggerConfiguration);
+app.use("/apidocs", swaggerUIExpress.serve, swaggerUIExpress.setup(specs));
 
 //** Basic configurations */
 app.use(express.json());
