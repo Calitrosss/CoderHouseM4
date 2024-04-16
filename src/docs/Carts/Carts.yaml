@@ -1,0 +1,155 @@
+paths:
+  /api/carts:
+    get:
+      summary: Obtiene todos los carritos
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Los carritos se han obtenido satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Carts"
+        "400":
+          description: Los carritos no se han obtenido debido a un error de petición
+        "500":
+          description: Los carritos no se han obtenido debido a un error de servidor
+
+  /api/carts/{cid}:
+    get:
+      summary: Obtiene los productos de un carrito en particular por su id
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Id del carrito que se desea solicitar
+          schema:
+            type: String
+      responses:
+        "200":
+          description: El detalle del carrito se obtuvo satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#components/schemas/CartProducts"
+        "400":
+          description: El detalle del carrito no se ha obtenido debido a un error de petición
+        "404":
+          description: El detalle del carrito no se ha obtenido debido a que no existe en la base de datos
+        "500":
+          description: El detalle del carrito no se ha obtenido debido a un error de servidor
+
+components:
+  schemas:
+    Carts:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado por mongo
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: ObjectId
+                description: Id del producto
+              quantity:
+                type: Number
+                description: Cantidad del producto
+              _id:
+                type: ObjectId
+                description: Id autogenerado por mongo
+          description: Listado de productos agregados al carrito
+      example:
+        _id: ObjectId("65a9e2a09f6d18490cc261fa")
+        products:
+          [
+            {
+              "product": ObjectId("65a0bdbd949c60c84708a584"),
+              "quantity": 3,
+              "_id": ObjectId("65ea9ddff8a3b52bb7917652"),
+            },
+          ]
+
+    CartProducts:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Estatus resultado de la petición (success/error)
+        payload:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: object
+                description: Detalle del producto
+                properties:
+                  _id:
+                    type: ObjectId
+                    description: Id del producto
+                  title:
+                    type: String
+                    description: Nombre del producto
+                  description:
+                    type: String
+                    description: Desccripción del produto
+                  code:
+                    type: String
+                    description: Código del producto
+                  price:
+                    type: Number
+                    description: Precio del producto
+                  status:
+                    type: Boolean
+                    description: Estatus del producto
+                  stock:
+                    type: Number
+                    description: Stock del producto
+                  category:
+                    type: String
+                    description: Categoría del producto
+                  thumbnails:
+                    type: Array
+                    description: Listado de URLs de las imágenes del producto
+                  owner:
+                    type: String
+                    description: Id del creador del producto
+              quantity:
+                type: Number
+                description: Cantidad del producto
+              _id:
+                type: ObjectId
+                description: Id autogenerado por mongo
+          description: Listado de productos agregados al carrito
+      example:
+        status: "success"
+        payload:
+          [
+            {
+              "product":
+                {
+                  "owner": "admin",
+                  "_id": "65a0bdbd949c60c84708a580",
+                  "title": "Samsung Galaxy S22",
+                  "description": "The Samsung Galaxy S22 is the flagship smartphone of 2023, featuring a powerful processor, stunning display, and advanced camera system.",
+                  "code": "S22",
+                  "price": 999,
+                  "status": true,
+                  "stock": 97,
+                  "category": "Samsung",
+                  "thumbnails": ["https://example.com/s22.jpg"],
+                },
+              "quantity": 3,
+              "_id": "661eab29eadc34fda0f2c9ec",
+            },
+          ]

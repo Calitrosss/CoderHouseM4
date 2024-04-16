@@ -37,7 +37,7 @@ paths:
                 $ref: "#components/schemas/Products"
         "400":
           description: El producto no se ha creado debido a un error de petición
-        "401":
+        "404":
           description: El producto no se ha creado debido a que no existe en la base de datos
         "500":
           description: El producto no se ha creado debido a un error de servidor
@@ -63,7 +63,7 @@ paths:
                 $ref: "#components/schemas/Products"
         "400":
           description: El producto no se ha obtenido debido a un error de petición
-        "401":
+        "404":
           description: El producto no se ha obtenido debido a que no existe en la base de datos
         "500":
           description: El producto no se ha obtenido debido a un error de servidor
@@ -87,7 +87,7 @@ paths:
                 $ref: "#components/schemas/Products"
         "400":
           description: El producto no se ha actualizado debido a un error de petición
-        "401":
+        "404":
           description: El producto no se ha actualizado debido a que no existe en la base de datos
         "500":
           description: El producto no se ha actualizado debido a un error de servidor
@@ -112,7 +112,7 @@ paths:
                 $ref: "#components/schemas/Products"
         "400":
           description: El producto no se ha eliminado debido a un error de petición
-        "401":
+        "404":
           description: El producto no se ha eliminado debido a que no existe en la base de datos
         "500":
           description: El producto no se ha eliminado debido a un error de servidor
