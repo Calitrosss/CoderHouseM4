@@ -33,6 +33,6 @@ GOOGLE_APP_PASS=
 
 ---
 
-Se agrega doumentación api para las rutas de Productos y Carrritos.
+Se agrega doumentación api para las rutas de Productos y Carritos.
 
 - /apidocs
