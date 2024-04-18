@@ -301,6 +301,7 @@ paths:
   /api/carts/{cid}/purchase:
     post:
       summary: Realiza la compra y genera un ticket
+      description: La respuesta incluye el detalle de los productos que no pudieron ser comprados los cuales son los únicos que quedarán en el carrito.
       tags:
         - Carts
       parameters:
@@ -326,7 +327,6 @@ paths:
                     type: object
                     properties:
                       cart:
-                        description: Listado de productos que quedron en el carrito, no pudieron ser comprados
                         type: object
                         $ref: "#components/schemas/Carts"
                       ticket:
