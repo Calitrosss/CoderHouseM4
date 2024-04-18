@@ -36,6 +36,6 @@ viewsRoutes.get("/failtologin", getFailLogin);
 
 viewsRoutes.get("/forgot-pass", getForgotPass);
 
-viewsRoutes.get("/reset-pass", getResetPass);
+viewsRoutes.get("/reset-pass/:rid", getResetPass);
 
 export default viewsRoutes;

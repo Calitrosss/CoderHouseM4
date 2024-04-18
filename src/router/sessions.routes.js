@@ -38,6 +38,6 @@ sessionsRoutes.get("/current", getCurrent);
 
 sessionsRoutes.post("/forgot-pass", sendResetPassLink);
 
-sessionsRoutes.put("/reset-pass", putResetPass);
+sessionsRoutes.put("/reset-pass/:rid", putResetPass);
 
 export default sessionsRoutes;

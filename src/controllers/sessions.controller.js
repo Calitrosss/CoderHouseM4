@@ -2,6 +2,7 @@ import UsersDTO from "../dao/dto/users.dto.js";
 import { googleSendSimpleMail } from "../utils/mailing.js";
 
 import { userModel } from "../dao/models/user.model.js";
+import { resetLinksModel } from "../dao/models/resetlinks.model.js";
 import { createHash, isValidPassword } from "../utils/bcrypt.js";
 
 export const postRegister = (req, res) => {
@@ -57,12 +58,21 @@ export const sendResetPassLink = async (req, res) => {
   try {
     const { email } = req.body;
 
+    const findResetLink = await resetLinksModel.findOne({ email });
+    console.log(findResetLink);
+
+    if (findResetLink) await resetLinksModel.deleteOne({ _id: findResetLink._id });
+
+    const resetId = await resetLinksModel.create({ email });
+
+    const resetLink = `http://localhost:8080/reset-pass/${resetId._id.toString()}`;
+
     await googleSendSimpleMail({
       from: "eCommerce",
       to: email,
       subject: "eCommerce - Restablecer contraseña",
       html: `
-      Por favor ingresa a este link para que puedas reestablecer tu contraseña: <a href="http://localhost:8080/reset-pass" target="_blank" rel="noopener noreferrer">LINK</a>
+      Por favor ingresa a este link para que puedas reestablecer tu contraseña: <a href="${resetLink}" target="_blank" rel="noopener noreferrer">LINK</a>
       `,
     });
 
@@ -75,7 +85,18 @@ export const sendResetPassLink = async (req, res) => {
 
 export const putResetPass = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { rid } = req.params;
+    const resetLink = await resetLinksModel.findOne({ _id: rid });
+
+    if (!resetLink)
+      return res.status(404).send({
+        status: "error",
+        error: `El link expiró, debe solicitar uno nuevo.`,
+      });
+
+    const email = resetLink.email;
+
+    const { password } = req.body;
 
     const user = await userModel.findOne({ email });
 
@@ -91,6 +112,8 @@ export const putResetPass = async (req, res) => {
     }
 
     await userModel.updateOne({ _id: user._id }, { password: createHash(password) });
+
+    await resetLinksModel.deleteOne({ _id: rid });
 
     res.send({ status: "success", message: "OK" });
   } catch (error) {
