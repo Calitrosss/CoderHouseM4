@@ -19,7 +19,7 @@ paths:
                 type: object
                 properties:
                   status:
-                    type: String
+                    type: string
                     enum: [success, error]
                     example: success
                   payload:
@@ -73,7 +73,7 @@ paths:
                 type: object
                 properties:
                   status:
-                    type: String
+                    type: string
                     enum: [success, error]
                     example: success
                   payload:
@@ -140,7 +140,7 @@ paths:
           required: true
           description: Id del producto que se desea solicitar
           schema:
-            type: String
+            type: string
       responses:
         "200":
           description: El producto se ha obtenido satisfactoriamente
@@ -150,7 +150,7 @@ paths:
                 type: object
                 properties:
                   status:
-                    type: String
+                    type: string
                     enum: [success, error]
                     example: success
                   payload:
@@ -182,11 +182,11 @@ paths:
                 type: object
                 properties:
                   status:
-                    type: String
+                    type: string
                     enum: [success, error]
                     example: success
                   payload:
-                    type: String
+                    type: string
                     example: Product ID "662060d86088e06c83761434" updated
         "400":
           description: El producto no se ha actualizado debido a un error de petición
@@ -205,7 +205,7 @@ paths:
           required: true
           description: Id del producto que se desea eliminar
           schema:
-            type: String
+            type: string
       responses:
         "200":
           description: El producto se ha eliminado satisfactoriamente
@@ -215,11 +215,11 @@ paths:
                 type: object
                 properties:
                   status:
-                    type: String
+                    type: string
                     enum: [success, error]
                     example: success
                   payload:
-                    type: String
+                    type: string
                     example: Product ID "662060d86088e06c83761434" deleted
         "400":
           description: El producto no se ha eliminado debido a un error de petición
@@ -237,31 +237,31 @@ components:
           type: ObjectId
           description: Id autogenerado por mongo
         title:
-          type: String
+          type: string
           description: Nombre del producto
         description:
-          type: String
+          type: string
           description: Desccripción del produto
         code:
-          type: String
+          type: string
           description: Código del producto
         price:
-          type: Number
+          type: number
           description: Precio del producto
         status:
           type: Boolean
           description: Estatus del producto
         stock:
-          type: Number
+          type: number
           description: Stock del producto
         category:
-          type: String
+          type: string
           description: Categoría del producto
         thumbnails:
-          type: Array
+          type: array
           description: Listado de URLs de las imágenes del producto
         owner:
-          type: String
+          type: string
           description: Id del creador del producto
       example:
         _id: ObjectId("65a0bdbd949c60c84708a580")
@@ -280,28 +280,28 @@ components:
       type: object
       properties:
         title:
-          type: String
+          type: string
           description: Nombre del producto
         description:
-          type: String
+          type: string
           description: Desccripción del produto
         code:
-          type: String
+          type: string
           description: Código del producto
         price:
-          type: Number
+          type: number
           description: Precio del producto
         status:
           type: Boolean
           description: Estatus del producto
         stock:
-          type: Number
+          type: number
           description: Stock del producto
         category:
-          type: String
+          type: string
           description: Categoría del producto
         thumbnails:
-          type: Array
+          type: array
           description: Listado de URLs de las imágenes del producto
       example:
         title: Samsung Galaxy S22

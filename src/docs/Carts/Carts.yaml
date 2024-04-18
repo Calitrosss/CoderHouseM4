@@ -25,6 +25,35 @@ paths:
         "500":
           description: Los carritos no se han obtenido debido a un error de servidor
 
+    post:
+      summary: Crea un carrito en blanco y lo asigna al usuario
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: El carrito se ha creado satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success, error]
+                    example: success
+                  payload:
+                    type: object
+                    $ref: "#components/schemas/Carts"
+                example:
+                  {
+                    "status": "success",
+                    "payload": { "products": [], "_id": "661eab13eadc34fda0f2c9e1" },
+                  }
+        "400":
+          description: El carrito no se ha creado debido a un error de petición
+        "500":
+          description: El carrito no se ha creado debido a un error de servidor
+
   /api/carts/{cid}:
     get:
       summary: Obtiene los productos de un carrito en particular por su id
@@ -69,6 +98,247 @@ paths:
         "500":
           description: El detalle del carrito no se ha obtenido debido a un error de servidor
 
+    put:
+      summary: Reemplaza los productos de un carrito en particular por su id
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Id del carrito que se desea ocupar
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/replaceCart"
+      responses:
+        "200":
+          description: El detalle del carrito se reeemplazó satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success, error]
+                    example: success
+                  payload:
+                    type: string
+                    example: Cart ID "661eab13eadc34fda0f2c9e1" updated with products
+        "400":
+          description: El detalle del carrito no se ha reemplazado debido a un error de petición
+        "404":
+          description: El detalle del carrito no se ha reemplazado debido a que no existe en la base de datos
+        "500":
+          description: El detalle del carrito no se ha reemplazado debido a un error de servidor
+
+    delete:
+      summary: Elimina los productos de un carrito en particular por su id
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Id del carrito que se desea vaciar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: El carrito se vació satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success, error]
+                    example: success
+                  payload:
+                    type: string
+                    example: Cart ID "661eab13eadc34fda0f2c9e1" emptied
+        "400":
+          description: El carrito no ha sido vaciado debido a un error de petición
+        "404":
+          description: El carrito no ha sido vaciado debido a que no existe en la base de datos
+        "500":
+          description: El carrito no ha sido vaciado debido a un error de servidor
+
+  /api/carts/{cid}/produts/{pid}:
+    post:
+      summary: Agrega un id de producto específico a un carrito específico por su id
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Id del carrito que se desea ocupar
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: Id del producto que se desea agregar al carrito
+          schema:
+            type: string
+      responses:
+        "200":
+          description: El producto se agregó al carrito satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success, error]
+                    example: success
+                  payload:
+                    type: string
+                    example: Product ID "65a0bdbd949c60c84708a581" added to Cart ID "661eab13eadc34fda0f2c9e1"
+        "400":
+          description: El producto no se agregó al carrito debido a un error de petición
+        "404":
+          description: El producto no se agregó al carrito debido a que no existe en la base de datos
+        "500":
+          description: El producto no se agregó al carrito debido a un error de servidor
+
+    put:
+      summary: Actualiza la cantidad de un producto específico por su id
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Id del carrito que se desea ocupar
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: Id del producto que se desea agregar al carrito
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: Number
+              example: { "quantity": 3 }
+      responses:
+        "200":
+          description: La cantidad se actualizó satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success, error]
+                    example: success
+                  payload:
+                    type: string
+                    example: Product ID "65a0bdbd949c60c84708a581" updated in Cart ID "661eab13eadc34fda0f2c9e1"
+        "400":
+          description: La cantidad del producto no se ha actualizado debido a un error de petición
+        "404":
+          description: La cantidad del producto no se ha actualizado debido a que no existe en la base de datos
+        "500":
+          description: La cantidad del producto no se ha actualizado debido a un error de servidor
+
+    delete:
+      summary: Elimina un id de producto específico de un carrito específico por su id
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Id del carrito que se desea ocupar
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: Id del producto que se desea eliminar del carrito
+          schema:
+            type: string
+      responses:
+        "200":
+          description: El producto se eliminó del carrito satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success, error]
+                    example: success
+                  payload:
+                    type: string
+                    example: Product ID "65a0bdbd949c60c84708a581" removed from Cart ID "661eab13eadc34fda0f2c9e1"
+        "400":
+          description: El producto no se eliminó del carrito debido a un error de petición
+        "404":
+          description: El producto no se eliminó del carrito debido a que no existe en la base de datos
+        "500":
+          description: El producto no se eliminó del carrito debido a un error de servidor
+
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Realiza la compra y genera un ticket
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Id del carrito que se desea ocupar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Se realizó la compra satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success, error]
+                    example: success
+                  payload:
+                    type: object
+                    properties:
+                      cart:
+                        description: Listado de productos que quedron en el carrito, no pudieron ser comprados
+                        type: object
+                        $ref: "#components/schemas/Carts"
+                      ticket:
+                        type: object
+                        $ref: "#components/schemas/Tickets"
+        "400":
+          description: La compra no se ha realizado debido a un error de petición
+        "404":
+          description: La compra no se ha realizado debido a que no existe en la base de datos
+        "500":
+          description: La compra no se ha realizado debido a un error de servidor
+
 components:
   schemas:
     Carts:
@@ -87,7 +357,7 @@ components:
                 type: ObjectId
                 description: Id del producto
               quantity:
-                type: Number
+                type: number
                 description: Cantidad del producto
               _id:
                 type: ObjectId
@@ -102,3 +372,54 @@ components:
               "_id": ObjectId("65ea9ddff8a3b52bb7917652"),
             },
           ]
+
+    Tickets:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado por mongo
+        code:
+          type: string
+          description: Código del ticket
+        purchase_datetime:
+          type: datetime
+          description: Fecha y hora de la creación del ticket
+        amount:
+          type: number
+          description: Monto total de la compra
+        purchaser:
+          type: string
+          description: id del usurio que realizó la compra
+      example:
+        _id: ObjectId("66208a9a030c9807b4786dde")
+        code: 6nb45glv4n1evblv4n1cce
+        purchase_datetime: 2024-04-18T02:44:12.280Z
+        amount: 5195
+        purchaser: 65c974db398a6e3eb8ba4a78
+
+  requestBodies:
+    replaceCart:
+      type: object
+      properties:
+        products:
+          description: Listado de productos con su cantidad que reemplazarán al carrito actual
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                description: ID del producto
+                type: string
+              quantity:
+                description: Cantidad del producto
+                type: Number
+      example:
+        {
+          "products":
+            [
+              { "product": "65a0bdbd949c60c84708a581", "quantity": 2 },
+              { "product": "65a0bdbd949c60c84708a584", "quantity": 4 },
+              { "product": "65a0bdbd949c60c84708a580", "quantity": 3 },
+            ],
+        }
