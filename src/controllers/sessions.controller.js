@@ -59,7 +59,6 @@ export const sendResetPassLink = async (req, res) => {
     const { email } = req.body;
 
     const findResetLink = await resetLinksModel.findOne({ email });
-    console.log(findResetLink);
 
     if (findResetLink) await resetLinksModel.deleteOne({ _id: findResetLink._id });
 
@@ -72,7 +71,7 @@ export const sendResetPassLink = async (req, res) => {
       to: email,
       subject: "eCommerce - Restablecer contraseña",
       html: `
-      Por favor ingresa a este link para que puedas reestablecer tu contraseña: <a href="${resetLink}" target="_blank" rel="noopener noreferrer">LINK</a>
+      Por favor ingresa a este link para que puedas reestablecer tu contraseña (el link tiene 1 hora de validez): <a href="${resetLink}" target="_blank" rel="noopener noreferrer">LINK</a>
       `,
     });
 
