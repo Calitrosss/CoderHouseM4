@@ -80,7 +80,50 @@ paths:
                     type: array
                     items:
                       $ref: "#components/schemas/Products"
-
+                  totalDocs:
+                    description: Total de registros en la base de datos
+                    type: integer
+                    example: 10
+                  limit:
+                    description: Cantidad máxima de registros por página
+                    type: integer
+                    example: 3
+                  totalPages:
+                    description: Cantidad total de páginas
+                    type: integer
+                    example: 4
+                  page:
+                    description: Nro. de página actual
+                    type: integer
+                    example: 2
+                  pagingCounter:
+                    description: Cantidad de páginas
+                    type: integer
+                    example: 4
+                  hasPrevPage:
+                    description: Indica si existe una página anterior a la actual
+                    type: boolean
+                    example: true
+                  hasNextPage:
+                    description: Indica si existe una página siguiente a la actual
+                    type: boolean
+                    example: true
+                  prevPage:
+                    description: Nro. dee página anterior a la actual
+                    type: integer
+                    example: 1
+                  nextPage:
+                    description: Nro. dee página siguiente a la actual
+                    type: integer
+                    example: 3
+                  prevLink:
+                    description: link a la página anterior a la actual
+                    type: string
+                    example: /products?limit=3&page=1&sort=&query=
+                  nextLink:
+                    description: link a la página anterior a la actual
+                    type: string
+                    example: /products?limit=3&page=3&sort=&query=
         "400":
           description: Los productos no se han obtenido debido a un error de petición
         "500":

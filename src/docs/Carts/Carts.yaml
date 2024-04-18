@@ -10,9 +10,16 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#components/schemas/Carts"
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [success, error]
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      $ref: "#components/schemas/Carts"
         "400":
           description: Los carritos no se han obtenido debido a un error de petición
         "500":
@@ -29,7 +36,7 @@ paths:
           required: true
           description: Id del carrito que se desea solicitar
           schema:
-            type: String
+            type: string
       responses:
         "200":
           description: El detalle del carrito se obtuvo satisfactoriamente
@@ -37,7 +44,24 @@ paths:
             application/json:
               schema:
                 type: object
-                $ref: "#components/schemas/CartProducts"
+                properties:
+                  status:
+                    type: string
+                    enum: [success, error]
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        product:
+                          $ref: "#components/schemas/Products"
+                        quantity:
+                          type: integer
+                          example: 3
+                        _id:
+                          type: string
+                          example: ObjectId("65ea9ddff8a3b52bb7917652")
         "400":
           description: El detalle del carrito no se ha obtenido debido a un error de petición
         "404":
@@ -50,96 +74,18 @@ components:
     Carts:
       type: object
       properties:
-        status:
-          type: String
-          description: Estatus resultado de la petición (success/error)
-        payload:
-          description: Listado de carritos
+        _id:
+          type: ObjectId
+          description: Id autogenerado por mongo
+        products:
           type: array
-          items:
-            type: object
-            properties:
-              _id:
-                type: ObjectId
-                description: Id autogenerado por mongo
-              products:
-                type: array
-                description: Listado de productos agregados al carrito
-                items:
-                  type: object
-                  properties:
-                    product:
-                      type: ObjectId
-                      description: Id del producto
-                    quantity:
-                      type: Number
-                      description: Cantidad del producto
-                    _id:
-                      type: ObjectId
-                      description: Id autogenerado por mongo
-      example:
-        status: "success"
-        payload:
-          [
-            {
-              _id: ObjectId("65a9e2a09f6d18490cc261fa"),
-              products:
-                [
-                  {
-                    "product": ObjectId("65a0bdbd949c60c84708a584"),
-                    "quantity": 3,
-                    "_id": ObjectId("65ea9ddff8a3b52bb7917652"),
-                  },
-                ],
-            },
-          ]
-
-    CartProducts:
-      type: object
-      properties:
-        status:
-          type: String
-          description: Estatus resultado de la petición (success/error)
-        payload:
           description: Listado de productos agregados al carrito
-          type: array
           items:
             type: object
             properties:
               product:
-                type: object
-                description: Detalle del producto
-                properties:
-                  _id:
-                    type: ObjectId
-                    description: Id del producto
-                  title:
-                    type: String
-                    description: Nombre del producto
-                  description:
-                    type: String
-                    description: Desccripción del produto
-                  code:
-                    type: String
-                    description: Código del producto
-                  price:
-                    type: Number
-                    description: Precio del producto
-                  status:
-                    type: Boolean
-                    description: Estatus del producto
-                  stock:
-                    type: Number
-                    description: Stock del producto
-                  category:
-                    type: String
-                    description: Categoría del producto
-                  thumbnails:
-                    type: Array
-                    description: Listado de URLs de las imágenes del producto
-                  owner:
-                    type: String
-                    description: Id del creador del producto
+                type: ObjectId
+                description: Id del producto
               quantity:
                 type: Number
                 description: Cantidad del producto
@@ -147,24 +93,12 @@ components:
                 type: ObjectId
                 description: Id autogenerado por mongo
       example:
-        status: "success"
-        payload:
+        _id: ObjectId("65a0bdbd949c60c84708a580")
+        products:
           [
             {
-              "product":
-                {
-                  "owner": "admin",
-                  "_id": "65a0bdbd949c60c84708a580",
-                  "title": "Samsung Galaxy S22",
-                  "description": "The Samsung Galaxy S22 is the flagship smartphone of 2023, featuring a powerful processor, stunning display, and advanced camera system.",
-                  "code": "S22",
-                  "price": 999,
-                  "status": true,
-                  "stock": 97,
-                  "category": "Samsung",
-                  "thumbnails": ["https://example.com/s22.jpg"],
-                },
+              "product": ObjectId("65a0bdbd949c60c84708a584"),
               "quantity": 3,
-              "_id": "661eab29eadc34fda0f2c9ec",
+              "_id": ObjectId("65ea9ddff8a3b52bb7917652"),
             },
           ]
