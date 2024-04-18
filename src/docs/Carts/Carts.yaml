@@ -50,32 +50,47 @@ components:
     Carts:
       type: object
       properties:
-        _id:
-          type: ObjectId
-          description: Id autogenerado por mongo
-        products:
+        status:
+          type: String
+          description: Estatus resultado de la petición (success/error)
+        payload:
+          description: Listado de carritos
           type: array
           items:
             type: object
             properties:
-              product:
-                type: ObjectId
-                description: Id del producto
-              quantity:
-                type: Number
-                description: Cantidad del producto
               _id:
                 type: ObjectId
                 description: Id autogenerado por mongo
-          description: Listado de productos agregados al carrito
+              products:
+                type: array
+                description: Listado de productos agregados al carrito
+                items:
+                  type: object
+                  properties:
+                    product:
+                      type: ObjectId
+                      description: Id del producto
+                    quantity:
+                      type: Number
+                      description: Cantidad del producto
+                    _id:
+                      type: ObjectId
+                      description: Id autogenerado por mongo
       example:
-        _id: ObjectId("65a9e2a09f6d18490cc261fa")
-        products:
+        status: "success"
+        payload:
           [
             {
-              "product": ObjectId("65a0bdbd949c60c84708a584"),
-              "quantity": 3,
-              "_id": ObjectId("65ea9ddff8a3b52bb7917652"),
+              _id: ObjectId("65a9e2a09f6d18490cc261fa"),
+              products:
+                [
+                  {
+                    "product": ObjectId("65a0bdbd949c60c84708a584"),
+                    "quantity": 3,
+                    "_id": ObjectId("65ea9ddff8a3b52bb7917652"),
+                  },
+                ],
             },
           ]
 
@@ -86,6 +101,7 @@ components:
           type: String
           description: Estatus resultado de la petición (success/error)
         payload:
+          description: Listado de productos agregados al carrito
           type: array
           items:
             type: object
@@ -130,7 +146,6 @@ components:
               _id:
                 type: ObjectId
                 description: Id autogenerado por mongo
-          description: Listado de productos agregados al carrito
       example:
         status: "success"
         payload:

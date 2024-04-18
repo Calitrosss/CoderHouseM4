@@ -1,23 +1,5 @@
 paths:
   /api/products:
-    get:
-      summary: Obtiene todos los productos
-      tags:
-        - Products
-      responses:
-        "200":
-          description: Los productos se han obtenido satisfactoriamente
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#components/schemas/Products"
-        "400":
-          description: Los productos no se han obtenido debido a un error de petición
-        "500":
-          description: Los productos no se han obtenido debido a un error de servidor
-
     post:
       summary: Crea un nuevo producto
       tags:
@@ -34,13 +16,75 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#components/schemas/Products"
+                type: object
+                properties:
+                  status:
+                    type: String
+                    enum: [success, error]
+                    example: success
+                  payload:
+                    type: object
+                    $ref: "#components/schemas/Products"
         "400":
           description: El producto no se ha creado debido a un error de petición
         "404":
           description: El producto no se ha creado debido a que no existe en la base de datos
         "500":
           description: El producto no se ha creado debido a un error de servidor
+
+  /api/products?limit={limit}&page={page}&sort={sort}&query={query}:
+    get:
+      summary: Obtiene todos los productos
+      tags:
+        - Products
+      parameters:
+        - name: limit
+          in: query
+          description: Cantidad máxima de registros a solicitar por página
+          schema:
+            type: integer
+            default: 10
+        - name: page
+          in: query
+          description: Nro de página a mostrar de los registros solicitados
+          schema:
+            type: integer
+            default: 1
+        - name: sort
+          in: query
+          description: Para indicar si se desea ordenar los registros por precio ascendente o descendente
+          schema:
+            type: string
+            enum: [asc, desc]
+            default:
+        - name: query
+          in: query
+          description: Para buscar por un campo y valor specífico (campo:valor)
+          schema:
+            type: string
+            default:
+            example: category:Huawei
+      responses:
+        "200":
+          description: Los productos se han obtenido satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: String
+                    enum: [success, error]
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      $ref: "#components/schemas/Products"
+
+        "400":
+          description: Los productos no se han obtenido debido a un error de petición
+        "500":
+          description: Los productos no se han obtenido debido a un error de servidor
 
   /api/products/{pid}:
     get:
@@ -60,7 +104,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#components/schemas/Products"
+                type: object
+                properties:
+                  status:
+                    type: String
+                    enum: [success, error]
+                    example: success
+                  payload:
+                    type: object
+                    $ref: "#components/schemas/Products"
         "400":
           description: El producto no se ha obtenido debido a un error de petición
         "404":
@@ -84,7 +136,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#components/schemas/Products"
+                type: object
+                properties:
+                  status:
+                    type: String
+                    enum: [success, error]
+                    example: success
+                  payload:
+                    type: String
+                    example: Product ID "662060d86088e06c83761434" updated
         "400":
           description: El producto no se ha actualizado debido a un error de petición
         "404":
@@ -109,7 +169,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#components/schemas/Products"
+                type: object
+                properties:
+                  status:
+                    type: String
+                    enum: [success, error]
+                    example: success
+                  payload:
+                    type: String
+                    example: Product ID "662060d86088e06c83761434" deleted
         "400":
           description: El producto no se ha eliminado debido a un error de petición
         "404":
