@@ -1,4 +1,4 @@
-# Desafío clase 39
+# Desafío clase 41
 
 ## Instalación y configuración
 
@@ -33,6 +33,4 @@ GOOGLE_APP_PASS=
 
 ---
 
-Se agrega doumentación api para las rutas de Productos y Carritos.
-
-- /apidocs
+Se agregan módulos de testing.
