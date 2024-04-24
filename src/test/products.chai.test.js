@@ -27,7 +27,6 @@ describe("Testing de Product Manager", () => {
     const query = "";
 
     const result = await this.productMng.getProducts(limit, page, sort, query);
-    console.log(result);
 
     expect(result).to.be.an("object");
     expect(result).to.have.property("status");
@@ -52,9 +51,12 @@ describe("Testing de Product Manager", () => {
     expect(result).to.have.property("status");
 
     if (result.status === "success") {
+      const objectIdRegex = /^[0-9a-fA-F]{24}$/;
       expect(result).to.have.property("payload");
+      expect(result.payload).to.be.an("object");
       expect(result.payload).to.have.property("_id");
       expect(result.payload._id).to.be.ok;
+      expect(result.payload._id).to.match(objectIdRegex);
       productId = result.payload._id.toString();
     } else {
       expect(result).to.have.property("error");
