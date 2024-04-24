@@ -8,7 +8,8 @@
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
     "testProducts": "mocha src/test/products.chai.test.js",
-    "testCarts": "mocha src/test/carts.chai.test.js"
+    "testCarts": "mocha src/test/carts.chai.test.js",
+    "testSuper": "mocha src/test/supertest.test.js"
   },
   "keywords": [],
   "author": "",

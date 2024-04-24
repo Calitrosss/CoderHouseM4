@@ -37,3 +37,6 @@ Se agregan módulos de testing:
 
 - npm run testProducts
 - npm run testCarts
+- Usar 2 terminales:
+  - Terminal 1: npm run dev
+  - Terminal 2: npm run testSuper
