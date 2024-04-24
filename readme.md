@@ -33,4 +33,7 @@ GOOGLE_APP_PASS=
 
 ---
 
-Se agregan módulos de testing.
+Se agregan módulos de testing:
+
+- npm run testProducts
+- npm run testCarts
