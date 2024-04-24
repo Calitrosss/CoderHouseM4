@@ -7,7 +7,6 @@ export const getVariables = () => {
     environment: process.env.ENVIRONMENT,
     port: process.env.PORT,
     connString: process.env.MONGO_URL,
-    connStringTest: process.env.MONGO_URL_TEST,
     secretKey: process.env.SECRET_KEY,
     adminEmail: process.env.ADMIN_EMAIL,
     adminPassword: process.env.ADMIN_PASSWORD,
