@@ -9,7 +9,7 @@ export const postRegister = (req, res) => {
   res.redirect("/login");
 };
 
-export const postLogin = (req, res) => {
+export const postLogin = async (req, res) => {
   if (!req.user) {
     req.logger.info(`${new Date().toLocaleString()} => Error with credentials`);
     return res.redirect("/failtologin");
@@ -24,14 +24,21 @@ export const postLogin = (req, res) => {
     role: req.user.role,
   };
 
+  req.user.email !== "adminCoder@coder.com" &&
+    (await userModel.findByIdAndUpdate(req.user._id, { last_connection: Date.now() }));
+
   res.redirect("/");
 };
 
-export const postLogout = (req, res) => {
+export const postLogout = async (req, res) => {
   try {
+    req.user.email !== "adminCoder@coder.com" &&
+      (await userModel.findByIdAndUpdate(req.user._id, { last_connection: Date.now() }));
+
     req.session.destroy((err) => {
       if (err) return res.status(500).json({ error: err });
     });
+
     res.send({ redirect: "http://localhost:8080/login" });
   } catch (error) {
     req.logger.error(`${new Date().toLocaleString()} => ${error}`);
