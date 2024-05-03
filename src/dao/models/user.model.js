@@ -19,7 +19,7 @@ const userSchema = mongoose.Schema({
       {
         name: {
           type: String,
-          enum: ["profile", "product", "identity", "residence", "account"],
+          enum: ["profile", "identity", "residence", "account", "product"],
         },
         reference: String,
       },
