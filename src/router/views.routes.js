@@ -12,6 +12,7 @@ import {
   getFailLogin,
   getForgotPass,
   getResetPass,
+  getUserProfile,
 } from "../controllers/views.controller.js";
 
 const viewsRoutes = Router();
@@ -37,5 +38,7 @@ viewsRoutes.get("/failtologin", getFailLogin);
 viewsRoutes.get("/forgot-pass", getForgotPass);
 
 viewsRoutes.get("/reset-pass/:rid", getResetPass);
+
+viewsRoutes.get("/user-profile/:uid", chekAuth, getUserProfile);
 
 export default viewsRoutes;

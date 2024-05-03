@@ -37,5 +37,5 @@ GOOGLE_APP_PASS=
   - **_documents_**: arreglo para almacenar archivos
   - **_last_connection_**: última fecha de login/logout
 - Nueva ruta y vista para cargar documentos al usuario:
-  - Vista: **_/user-profile_**
+  - Vista: **_/user-profile/:uid_**
   - Ruta: **_/api/users/:uid/documents_**

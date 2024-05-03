@@ -15,3 +15,12 @@ export const putSwitchUserPremiumRole = async (req, res) => {
     res.status(400).send({ status: "error", error: `${error}` });
   }
 };
+
+export const patchUserDocuments = async (req, res) => {
+  try {
+    console.log("TEST");
+  } catch (error) {
+    req.logger.error(`${new Date().toLocaleString()} => ${error}`);
+    res.status(400).send({ status: "error", error: `${error}` });
+  }
+};

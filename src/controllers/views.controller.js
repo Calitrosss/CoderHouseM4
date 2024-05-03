@@ -58,3 +58,8 @@ export const getForgotPass = (req, res) => {
 export const getResetPass = (req, res) => {
   res.render("reset-pass", { title: "Reset Password" });
 };
+
+export const getUserProfile = (req, res) => {
+  const { uid } = req.params;
+  res.render("user-profile", { title: "User Profile", uid });
+};

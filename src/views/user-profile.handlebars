@@ -1,0 +1,43 @@
+<h1>Actualizar usuario - {{uid}}</h1>
+<form id="frmUpdate" enctype="multipart/form-data">
+  <labe>Nombre: </labe>
+  <input type="text" id="first_name" name="first_name" disabled />
+  <br />
+  <br />
+  <labe>Apellido: </labe>
+  <input type="text" id="last_name" name="last_name" disabled />
+  <br />
+  <br />
+  <labe>Edad: </labe>
+  <input type="number" id="age" name="age" disabled />
+  <br />
+  <br />
+  <labe>Email: </labe>
+  <input type="email" id="email" name="email" disabled />
+  <br />
+  <br />
+  <labe>Imagen de perfil: </labe>
+  <input type="file" id="profile" name="profile" />
+  <br />
+  <br />
+  <labe>Comprobante de identidad: </labe>
+  <input type="file" id="identity" name="identity" />
+  <br />
+  <br />
+  <labe>Comprobante de domicilio: </labe>
+  <input type="file" id="residence" name="residence" />
+  <br />
+  <br />
+  <labe>Comprobante de estado de cuenta: </labe>
+  <input type="file" id="account" name="account" />
+  <br />
+  <br />
+  <labe>Imágenes de productos: </labe>
+  <input type="file" id="product" name="product" multiple />
+  <br />
+  <br />
+  <button type="button" id="btnUpdate">Actualizar usuario</button>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../js/user-profile.js"></script>

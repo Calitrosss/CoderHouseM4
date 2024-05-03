@@ -11,7 +11,7 @@ btnReset.addEventListener("click", async (e) => {
     const partesUrl = url.split("/");
     const parametro = partesUrl[partesUrl.length - 1];
 
-    const response = await fetch(`http://localhost:8080/api/sessions/reset-pass/${parametro}`, {
+    const response = await fetch(`/api/sessions/reset-pass/${parametro}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
