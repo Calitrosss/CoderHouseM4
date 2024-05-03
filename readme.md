@@ -1,4 +1,4 @@
-# Desafío clase 41
+# Desafío clase 44
 
 ## Instalación y configuración
 
@@ -33,10 +33,9 @@ GOOGLE_APP_PASS=
 
 ---
 
-Se agregan módulos de testing:
-
-- npm run testProducts
-- npm run testCarts
-- Usar 2 terminales:
-  - Terminal 1: npm run dev
-  - Terminal 2: npm run testSuper
+- Nuevas propiedades al modelo Users:
+  - **_documents_**: arreglo para almacenar archivos
+  - **_last_connection_**: última fecha de login/logout
+- Nueva ruta y vista para cargar documentos al usuario:
+  - Vista: **_/user-profile_**
+  - Ruta: **_/api/users/:uid/documents_**
