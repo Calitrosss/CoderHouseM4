@@ -6,21 +6,28 @@ document.addEventListener("DOMContentLoaded", async () => {
   const txtEmail = document.getElementById("email");
   const btnUpdate = document.getElementById("btnUpdate");
 
+  const uid = window.location.pathname.split("/")[2];
+
   let current = await getCurrent();
-  if (current.status === "error") return console.error(current.error);
+  const { id, first_name, last_name, age, email } = current.user;
 
-  const { first_name, last_name, age, email } = current.user;
-
-  txtFirstName.value = first_name || "";
-  txtLasttName.value = last_name || "";
-  txtAge.value = age || "";
-  txtEmail.value = email || "";
+  if (current.status === "error" || current.user?.id !== uid) {
+    txtFirstName.value = "";
+    txtLasttName.value = "";
+    txtAge.value = "";
+    txtEmail.value = "";
+  } else {
+    txtFirstName.value = first_name || "";
+    txtLasttName.value = last_name || "";
+    txtAge.value = age || "";
+    txtEmail.value = email || "";
+  }
 
   btnUpdate.addEventListener("click", async (e) => {
     try {
       e.preventDefault();
 
-      const uid = window.location.pathname.split("/")[2];
+      if (uid !== id) return console.error("ERROR");
 
       const url = `/api/users/${uid}/documents`;
 
@@ -38,8 +45,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (response.ok) {
         console.log("Archivos subidos exitosamente");
+        console.log(await response.json());
       } else {
         console.error("Error al subir archivos");
+        console.warn(await response.json());
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);

@@ -5,7 +5,7 @@ export const putSwitchUserPremiumRole = async (req, res) => {
     const { uid } = req.params;
 
     const user = await userModel.findOne({ _id: uid });
-    if (!user) return { status: "error", error: `User not found` };
+    if (!user) return res.status(400).send({ status: "error", error: `User not found` });
 
     await userModel.updateOne({ _id: uid }, { role: user.role === "user" ? "premium" : "user" });
 
@@ -18,7 +18,11 @@ export const putSwitchUserPremiumRole = async (req, res) => {
 
 export const patchUserDocuments = async (req, res) => {
   try {
-    console.log("TEST");
+    const { uid } = req.params;
+    const user = await userModel.findOne({ _id: uid });
+    if (!user) return res.status(400).send({ status: "error", error: `User not found` });
+
+    res.send({ status: "success", message: "Success" });
   } catch (error) {
     req.logger.error(`${new Date().toLocaleString()} => ${error}`);
     res.status(400).send({ status: "error", error: `${error}` });

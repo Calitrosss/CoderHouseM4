@@ -6,6 +6,6 @@ const usersRoutes = Router();
 
 usersRoutes.put("/premium/:uid", chekAuth, authorization("admin"), putSwitchUserPremiumRole);
 
-usersRoutes.put("/:uid/documents", chekAuth, patchUserDocuments);
+usersRoutes.patch("/:uid/documents", chekAuth, patchUserDocuments);
 
 export default usersRoutes;
