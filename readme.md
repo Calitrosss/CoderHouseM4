@@ -9,6 +9,15 @@
 - Para instalar las dependencias: `npm i`
 - Para iniciar: `nodemon main`
 
+### Configuración de carpetas
+
+- Se deben crear las carpetas "profiles", "documents" y "products" dentro de "public" en caso de que no existan, deben quedar de la siguiente manera:
+  - public/profiles
+  - public/documents
+  - public/products
+
+---
+
 ### Configuración de entorno
 
 ---
