@@ -15,7 +15,7 @@ usersRoutes.patch(
     { name: "identity", maxCount: 1 },
     { name: "residence", maxCount: 1 },
     { name: "account", maxCount: 1 },
-    { name: "product", maxCount: 5 },
+    { name: "product" },
   ]),
   patchUserDocuments
 );
