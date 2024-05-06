@@ -39,5 +39,5 @@ GOOGLE_APP_PASS=
 - Nueva ruta y vista para cargar documentos al usuario:
   - Vista: **_/user-profile/:uid_**
   - Ruta: **_/api/users/:uid/documents_**
-- Ruta para cambiar el rol de un usuario entre "user" y "premium" y viceversa:
+- Ruta para cambiar el rol de un usuario entre "user" y "premium" y viceversa, valida si el usuario ya tiene cargado documentos de identidad, residencia y cuenta banccaria para poder pasar a premium:
   - **_/api/users/premium/:uid_**
