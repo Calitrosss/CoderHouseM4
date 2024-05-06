@@ -4,16 +4,12 @@
 
 ### Instalación de dependencias
 
----
-
 - Para instalar las dependencias: `npm i`
 - Para iniciar: `nodemon main`
 
 ---
 
 ### Configuración de carpetas
-
----
 
 - Se deben crear las carpetas "profiles", "documents" y "products" dentro de "public" en caso de que no existan, deben quedar de la siguiente manera:
   - public/profiles
@@ -23,8 +19,6 @@
 ---
 
 ### Configuración de entorno
-
----
 
 - Agregar archivo .env en el directorio raíz con los siguientes parámetros:
 
@@ -43,8 +37,6 @@ GOOGLE_APP_PASS=
 ```
 
 ## Aspectos incluídos
-
----
 
 - Nuevas propiedades al modelo Users:
   - **_documents_**: arreglo para almacenar archivos
