@@ -1,11 +1,18 @@
-import { usersService } from "../dao/repositories.js";
+import { usersService } from "../dao/repositories/index.js";
 
-export const putSwitchUserPremiumRole = async (uid) => {
+export const putSwitchUserPremiumRoleService = async (uid) => {
   const result = await usersService.putSwitchUserPremiumRole(uid);
   return result;
 };
 
-export const patchUserDocuments = async (uid, profile, identity, residence, account, products) => {
+export const patchUserDocumentsService = async (
+  uid,
+  profile,
+  identity,
+  residence,
+  account,
+  products
+) => {
   const result = await usersService.patchUserDocuments(
     uid,
     profile,

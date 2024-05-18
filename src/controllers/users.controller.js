@@ -1,4 +1,7 @@
-import { usersService } from "../dao/repositories/index.js";
+import {
+  putSwitchUserPremiumRoleService,
+  patchUserDocumentsService,
+} from "../services/users.service.js";
 
 import CustomError from "../errors/CustomError.js";
 import ErrorEnum from "../errors/ErrorEnum.js";
@@ -7,7 +10,7 @@ export const putSwitchUserPremiumRole = async (req, res, next) => {
   try {
     const { uid } = req.params;
 
-    const result = await usersService.putSwitchUserPremiumRole(uid);
+    const result = await putSwitchUserPremiumRoleService(uid);
     if (result.status === "error")
       await CustomError.createError({
         name: "Switch user role error",
@@ -40,7 +43,7 @@ export const patchUserDocuments = async (req, res, next) => {
 
     const products = req.files.product ?? [];
 
-    const result = await usersService.patchUserDocuments(
+    const result = await patchUserDocumentsService(
       uid,
       profile,
       identity,
