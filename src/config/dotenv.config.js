@@ -6,6 +6,7 @@ export const getVariables = () => {
   return {
     environment: process.env.ENVIRONMENT,
     port: process.env.PORT,
+    domain: process.env.DOMAIN,
     connString: process.env.MONGO_URL,
     secretKey: process.env.SECRET_KEY,
     adminEmail: process.env.ADMIN_EMAIL,

@@ -5,6 +5,9 @@ import { userModel } from "../dao/models/user.model.js";
 import { resetLinksModel } from "../dao/models/resetlinks.model.js";
 import { createHash, isValidPassword } from "../utils/bcrypt.js";
 
+import { getVariables } from "../config/dotenv.config.js";
+const { port, domain } = getVariables();
+
 export const postRegister = (req, res) => {
   res.redirect("/login");
 };
@@ -39,7 +42,7 @@ export const postLogout = async (req, res) => {
       if (err) return res.status(500).json({ error: err });
     });
 
-    res.send({ redirect: "http://localhost:8080/login" });
+    res.send({ redirect: "/login" });
   } catch (error) {
     req.logger.error(`${new Date().toLocaleString()} => ${error}`);
     res.status(400).send({ error: `${error}` });
@@ -72,7 +75,7 @@ export const sendResetPassLink = async (req, res) => {
 
     const resetId = await resetLinksModel.create({ email });
 
-    const resetLink = `http://localhost:8080/reset-pass/${resetId._id.toString()}`;
+    const resetLink = `${domain}:${port}/reset-pass/${resetId._id.toString()}`;
 
     await googleSendSimpleMail({
       from: "eCommerce",

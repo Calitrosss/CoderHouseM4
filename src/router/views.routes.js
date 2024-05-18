@@ -35,9 +35,9 @@ viewsRoutes.get("/failtoregister", getFailRegister);
 
 viewsRoutes.get("/failtologin", getFailLogin);
 
-viewsRoutes.get("/forgot-pass", applyPolicy(["user", "premium"]), getForgotPass);
+viewsRoutes.get("/forgot-pass", getForgotPass);
 
-viewsRoutes.get("/reset-pass/:rid", applyPolicy(["user", "premium"]), getResetPass);
+viewsRoutes.get("/reset-pass/:rid", getResetPass);
 
 viewsRoutes.get("/user-profile/:uid", chekAuth, applyPolicy(["user", "premium"]), getUserProfile);
 
