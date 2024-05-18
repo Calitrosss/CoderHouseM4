@@ -1,71 +1,64 @@
-import { userModel } from "../dao/models/user.model.js";
+import { usersService } from "../dao/repositories/index.js";
 
-export const putSwitchUserPremiumRole = async (req, res) => {
+import CustomError from "../errors/CustomError.js";
+import ErrorEnum from "../errors/ErrorEnum.js";
+
+export const putSwitchUserPremiumRole = async (req, res, next) => {
   try {
     const { uid } = req.params;
 
-    const user = await userModel.findOne({ _id: uid });
-    if (!user) return res.status(400).send({ status: "error", error: `User not found` });
+    const result = await usersService.putSwitchUserPremiumRole(uid);
+    if (result.status === "error")
+      await CustomError.createError({
+        name: "Switch user role error",
+        cause: `Error putSwitchUserPremiumRole(): ${result.error}`,
+        message: "Error trying switch role to user",
+        code: ErrorEnum.FORBIDDEN,
+      });
 
-    const identity = user.documents.find((d) => d.name === "identity");
-    const residence = user.documents.find((d) => d.name === "residence");
-    const account = user.documents.find((d) => d.name === "account");
-
-    if (user.role === "user" && (!identity || !residence || !account))
-      return res
-        .status(403)
-        .send({ status: "error", error: `User has not finished processing his documentation.` });
-
-    await userModel.updateOne({ _id: uid }, { role: user.role === "user" ? "premium" : "user" });
-
-    res.send({ status: "success", message: "Success" });
+    res.send(result);
   } catch (error) {
-    req.logger.error(`${new Date().toLocaleString()} => ${error}`);
-    res.status(400).send({ status: "error", error: `${error}` });
+    next(error);
   }
 };
 
-export const patchUserDocuments = async (req, res) => {
+export const patchUserDocuments = async (req, res, next) => {
   try {
     const { uid } = req.params;
-    const user = await userModel.findOne({ _id: uid });
-    if (!user) return res.status(400).send({ status: "error", error: `User not found` });
-
-    let documents = user.documents.filter(
-      (d) =>
-        d.name !== "profile" &&
-        d.name !== "identity" &&
-        d.name !== "residence" &&
-        d.name !== "account"
-    );
 
     const profile = req.files.profile ? req.files["profile"][0].path.split("public").join("") : "";
-    if (profile) documents = [...documents, { name: "profile", reference: profile }];
 
     const identity = req.files.identity
       ? req.files["identity"][0].path.split("public").join("")
       : "";
-    if (identity) documents = [...documents, { name: "identity", reference: identity }];
 
     const residence = req.files.residence
       ? req.files["residence"][0].path.split("public").join("")
       : "";
-    if (residence) documents = [...documents, { name: "residence", reference: residence }];
 
     const account = req.files.account ? req.files["account"][0].path.split("public").join("") : "";
-    if (account) documents = [...documents, { name: "account", reference: account }];
 
-    const product = req.files.product ?? [];
-    product.forEach((p) => {
-      documents = [...documents, { name: "product", reference: p.path.split("public").join("") }];
-    });
+    const products = req.files.product ?? [];
 
-    user.documents = documents;
-    await user.save();
+    const result = await usersService.patchUserDocuments(
+      uid,
+      profile,
+      identity,
+      residence,
+      account,
+      products
+    );
 
-    res.send({ status: "success", message: "Success" });
+    if (result.status === "error")
+      await CustomError.createError({
+        name: "User documentation update error",
+        cause: `Error patchUserDocuments(): ${result.error}`,
+        message: "Error trying update documents to user",
+        code: ErrorEnum.INVALID_PARAM,
+      });
+
+    res.send(result);
   } catch (error) {
-    req.logger.error(`${new Date().toLocaleString()} => ${error}`);
-    res.status(400).send({ status: "error", error: `${error}` });
+    next(error);
   }
 };

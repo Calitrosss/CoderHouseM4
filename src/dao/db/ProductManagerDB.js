@@ -34,7 +34,7 @@ export default class ProductManager {
     try {
       const product = await productModel.findOne({ _id: id });
 
-      if (!product) throw `Product Id "${id}" Not found`;
+      if (!product) throw new Error(`Product Id "${id}" Not found`);
 
       return product;
     } catch (error) {
@@ -44,8 +44,8 @@ export default class ProductManager {
 
   async addProduct({ title, description, code, price, stock, category, thumbnails, uid, role }) {
     try {
-      if (!price || price < 0) throw "Price is required";
-      if (!stock || stock < 0) throw "Stock is required";
+      if (!price || price < 0) throw new Error("Price is required");
+      if (!stock || stock < 0) throw new Error("Stock is required");
 
       const newProduct = {
         title,
@@ -91,12 +91,13 @@ export default class ProductManager {
         thumbnails,
       };
 
-      if (updateProduct.title?.trim().length === 0) throw "Title is required";
-      if (updateProduct.description?.trim().length === 0) throw "Description is required";
-      if (updateProduct.code?.trim().length === 0) throw "Code is required";
-      if (updateProduct.price < 0) throw "Price is required";
-      if (updateProduct.stock < 0) throw "Stock is required";
-      if (updateProduct.category?.trim().length === 0) throw "Category is required";
+      if (updateProduct.title?.trim().length === 0) throw new Error("Title is required");
+      if (updateProduct.description?.trim().length === 0)
+        throw new Error("Description is required");
+      if (updateProduct.code?.trim().length === 0) throw new Error("Code is required");
+      if (updateProduct.price < 0) throw new Error("Price is required");
+      if (updateProduct.stock < 0) throw new Error("Stock is required");
+      if (updateProduct.category?.trim().length === 0) throw new Error("Category is required");
 
       const product = await productModel.findOne({ _id: id });
       if (!product) return { status: "error", error: `Product Id "${id}" Not found` };

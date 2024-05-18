@@ -9,6 +9,14 @@ export const ErrorHandler = (error, req, res, next) => {
       req.logger.error(`${new Date().toLocaleString()} => ${error.cause}`);
       return res.status(400).send({ status: "error", error: error.name });
 
+    case ErrorEnum.UNAUTHORIZED:
+      req.logger.error(`${new Date().toLocaleString()} => ${error.cause}`);
+      return res.status(401).send({ status: "error", error: error.name });
+
+    case ErrorEnum.FORBIDDEN:
+      req.logger.error(`${new Date().toLocaleString()} => ${error.cause}`);
+      return res.status(403).send({ status: "error", error: error.name });
+
     case ErrorEnum.NOT_FOUND:
       req.logger.error(`${new Date().toLocaleString()} => ${error.cause}`);
       return res.status(404).send({ status: "error", error: error.name });

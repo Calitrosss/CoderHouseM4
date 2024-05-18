@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authorization, applyPolicy } from "../middlewares/auth.js";
+import { applyPolicy } from "../middlewares/auth.js";
 import {
   getProducts,
   getProductById,

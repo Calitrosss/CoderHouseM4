@@ -4,7 +4,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const txtLasttName = document.getElementById("last_name");
   const txtAge = document.getElementById("age");
   const txtEmail = document.getElementById("email");
+  const btnLogout = document.getElementById("btnLogout");
   const btnUpdate = document.getElementById("btnUpdate");
+
+  const profile = document.getElementById("profile");
+  const identity = document.getElementById("identity");
+  const residence = document.getElementById("residence");
+  const account = document.getElementById("account");
+  const products = document.getElementById("product");
 
   const uid = window.location.pathname.split("/")[2];
 
@@ -23,9 +30,38 @@ document.addEventListener("DOMContentLoaded", async () => {
     txtEmail.value = email || "";
   }
 
+  btnLogout.addEventListener("click", async (e) => {
+    const result = await fetch("/api/sessions/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const { redirect } = await result.json();
+
+    window.location.href = redirect;
+  });
+
   btnUpdate.addEventListener("click", async (e) => {
     try {
       e.preventDefault();
+
+      if (
+        !profile.value &&
+        !identity.value &&
+        !residence.value &&
+        !account.value &&
+        !products.value
+      )
+        return Swal.fire({
+          title: `Por favor seleccione al menos un archivo para subir`,
+          toast: true,
+          position: "top-end",
+          icon: "warning",
+          showConfirmButton: false,
+          timer: 2500,
+        });
 
       if (uid !== id) return console.error("ERROR");
 
@@ -43,15 +79,52 @@ document.addEventListener("DOMContentLoaded", async () => {
         body: formData,
       });
 
+      const responseData = await response.json();
+
       if (response.ok) {
-        console.log("Archivos subidos exitosamente");
-        console.log(await response.json());
+        if (responseData.status === "error")
+          return Swal.fire({
+            title: `Ocurrió un error al subir los archivos seleccionados.`,
+            toast: true,
+            position: "top-end",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+
+        Swal.fire({
+          title: `Archivos subidos exitosamente`,
+          toast: true,
+          position: "top-end",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+
+        profile.value = "";
+        identity.value = "";
+        residence.value = "";
+        account.value = "";
+        products.value = "";
       } else {
-        console.error("Error al subir archivos");
-        console.warn(await response.json());
+        Swal.fire({
+          title: `Ocurrió un error al subir los archivos.`,
+          toast: true,
+          position: "top-end",
+          icon: "error",
+          showConfirmButton: false,
+          timer: 2500,
+        });
       }
     } catch (error) {
-      console.error("Error en la solicitud:", error);
+      Swal.fire({
+        title: `Ocurrió un error en la solicitud: ${error}`,
+        toast: true,
+        position: "top-end",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2500,
+      });
     }
   });
 });
