@@ -28,7 +28,7 @@ export default class CartManager {
     try {
       const cart = await cartModel.findOne({ _id: id }).populate("products.product");
 
-      if (!cart) throw `Cart Id "${id}" Not found`;
+      if (!cart) throw new Error(`Cart Id "${id}" Not found`);
 
       return cart.products;
     } catch (error) {
@@ -71,7 +71,7 @@ export default class CartManager {
       const qty = quantity || 1;
 
       const cart = await this.getCartById(cid);
-      if (!cart) throw `Cart Id "${cid}" Not found`;
+      if (!cart) throw new Error(`Cart Id "${cid}" Not found`);
 
       const products = cart.products;
 
@@ -82,7 +82,7 @@ export default class CartManager {
         product.quantity += qty;
       }
 
-      const result = await cartModel.updateOne({ _id: cid }, { products });
+      await cartModel.updateOne({ _id: cid }, { products });
       return { status: "success", payload: `Product ID "${pid}" added to Cart ID "${cid}"` };
     } catch (error) {
       return { status: "error", error: `${error}` };
@@ -92,18 +92,18 @@ export default class CartManager {
   async removeProductFromCart(cid, pid) {
     try {
       const cart = await this.getCartById(cid);
-      if (!cart) throw `Cart Id "${cid}" Not found`;
+      if (!cart) throw new Error(`Cart Id "${cid}" Not found`);
 
       let products = cart.products;
 
       const product = products.find((p) => p.product.toString() === pid);
       if (!product) {
-        throw `Product Id "${pid}" not found in Cart ID "${cid}"`;
+        throw new Error(`Product Id "${pid}" not found in Cart ID "${cid}"`);
       } else {
         products = products.filter((p) => p.product.toString() !== pid);
       }
 
-      const result = await cartModel.updateOne({ _id: cid }, { products });
+      await cartModel.updateOne({ _id: cid }, { products });
       return { status: "success", payload: `Product ID "${pid}" removed from Cart ID "${cid}"` };
     } catch (error) {
       return { status: "error", error: `${error}` };
@@ -113,9 +113,9 @@ export default class CartManager {
   async updateCartProducts(cid, products) {
     try {
       const cart = await this.getCartById(cid);
-      if (!cart) throw `Cart Id "${cid}" Not found`;
+      if (!cart) throw new Error(`Cart Id "${cid}" Not found`);
 
-      const result = await cartModel.updateOne({ _id: cid }, products);
+      await cartModel.updateOne({ _id: cid }, products);
 
       return { status: "success", payload: `Cart ID "${cid}" updated with products` };
     } catch (error) {
@@ -125,21 +125,21 @@ export default class CartManager {
 
   async updateCartProductQuantity(cid, pid, quantity) {
     try {
-      if (!quantity || quantity < 0) throw "Quantity is required";
+      if (!quantity || quantity < 0) throw new Error("Quantity is required");
 
       const cart = await this.getCartById(cid);
-      if (!cart) throw `Cart Id "${cid}" Not found`;
+      if (!cart) throw new Error(`Cart Id "${cid}" Not found`);
 
       const products = cart.products;
 
       const product = products.find((p) => p.product.toString() === pid);
       if (!product) {
-        throw `Product Id "${pid}" not found in Cart ID "${cid}"`;
+        throw new Error(`Product Id "${pid}" not found in Cart ID "${cid}"`);
       } else {
         product.quantity = quantity;
       }
 
-      const result = await cart.save();
+      await cart.save();
 
       return { status: "success", payload: `Product ID "${pid}" updated in Cart ID "${cid}"` };
     } catch (error) {
@@ -150,11 +150,11 @@ export default class CartManager {
   async emptyCart(cid) {
     try {
       const cart = await this.getCartById(cid);
-      if (!cart) throw `Cart Id "${cid}" Not found`;
+      if (!cart) throw new Error(`Cart Id "${cid}" Not found`);
 
       cart.products = [];
 
-      const result = await cart.save();
+      await cart.save();
 
       return { status: "success", payload: `Cart ID "${cid}" emptied` };
     } catch (error) {
@@ -165,7 +165,7 @@ export default class CartManager {
   async makePurchase(cid, purchaser) {
     try {
       const cart = await this.getCartById(cid);
-      if (!cart) throw `Cart Id "${cid}" Not found`;
+      if (!cart) throw new Error(`Cart Id "${cid}" Not found`);
 
       const cartProducts = await this.getProductsByCartId(cid);
 

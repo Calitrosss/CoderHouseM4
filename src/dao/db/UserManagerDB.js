@@ -59,4 +59,13 @@ export default class UserManager {
       return { status: "error", error: `${error}` };
     }
   }
+
+  async getUsers() {
+    try {
+      const users = await userModel.find();
+      return users;
+    } catch (error) {
+      return [];
+    }
+  }
 }
