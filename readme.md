@@ -20,11 +20,12 @@
 
 ### Configuración de entorno
 
-- Agregar archivo .env en el directorio raíz con los siguientes parámetros:
+- Agregar archivo .env en el directorio raíz con los siguientes parámetros (ejemplos entre paréntesis):
 
 ```env
-ENVIRONMENT=
-PORT=
+ENVIRONMENT=(production ó development)
+PORT=(8080)
+DOMAIN=(http://localhost)
 MONGO_URL=
 SECRET_KEY=
 ADMIN_EMAIL=
