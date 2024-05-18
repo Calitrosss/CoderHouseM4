@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const btnLogout = document.getElementById("btnLogout");
   const btnUpdate = document.getElementById("btnUpdate");
 
+  const imgProfile = document.getElementById("imgProfile");
+
   const profile = document.getElementById("profile");
   const identity = document.getElementById("identity");
   const residence = document.getElementById("residence");
@@ -16,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const uid = window.location.pathname.split("/")[2];
 
   let current = await getCurrent();
-  const { id, first_name, last_name, age, email } = current.user;
+  const { id, first_name, last_name, age, email, img_profile } = current.user;
 
   if (current.status === "error" || current.user?.id !== uid) {
     txtFirstName.value = "";
@@ -29,6 +31,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     txtAge.value = age || "";
     txtEmail.value = email || "";
   }
+
+  if (img_profile) imgProfile.src = img_profile;
 
   btnLogout.addEventListener("click", async (e) => {
     const result = await fetch("/api/sessions/logout", {
@@ -92,20 +96,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             timer: 2500,
           });
 
-        Swal.fire({
+        await Swal.fire({
           title: `Archivos subidos exitosamente`,
           toast: true,
           position: "top-end",
           icon: "success",
           showConfirmButton: false,
-          timer: 2500,
+          timer: 1500,
         });
 
-        profile.value = "";
-        identity.value = "";
-        residence.value = "";
-        account.value = "";
-        products.value = "";
+        location.reload();
       } else {
         Swal.fire({
           title: `Ocurrió un error al subir los archivos.`,

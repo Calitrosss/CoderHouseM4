@@ -1,4 +1,11 @@
-<h1>Actualizar usuario</h1>
+<h1>Perfil de usuario</h1>
+<p>
+  <a href="/products"><button type="button">Ir a productos</button></a>
+  <button type="button" id="btnLogout">Cerrar sesión</button>
+</p>
+<p>
+  <img src="/profiles/_blank.jpg" alt="profile image" id="imgProfile" height="150px" />
+</p>
 <form id="frmUpdate" enctype="multipart/form-data">
   <labe>Nombre: </labe>
   <input type="text" id="first_name" name="first_name" disabled />
@@ -36,8 +43,7 @@
   <input type="file" id="product" name="product" accept="image/*" multiple />
   <br />
   <br />
-  <button type="button" id="btnLogout">Cerrar sesión</button>
-  <button type="button" id="btnUpdate">Actualizar usuario</button>
+  <button type="button" id="btnUpdate">Actualizar perfil</button>
 </form>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
