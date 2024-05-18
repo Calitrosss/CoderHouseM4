@@ -87,8 +87,6 @@ export default class CartManager {
         "utf-8"
       );
 
-      console.log(`Success: Code "${newCart.id}" created`);
-
       return { status: "success", payload: newCart };
     } catch (error) {
       console.error(`Error createCart(): ${error}`);
@@ -119,8 +117,6 @@ export default class CartManager {
         JSON.stringify(carts),
         "utf-8"
       );
-
-      console.log(`Success: Product ID "${pid}" added to Cart ID "${cid}"`);
 
       return { status: "success", payload: cart };
     } catch (error) {
