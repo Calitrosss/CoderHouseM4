@@ -33,3 +33,8 @@ export const deleteUsersService = async () => {
   const result = await usersService.deleteUsers();
   return result;
 };
+
+export const deleteUserByIdService = async (uid) => {
+  const result = await usersService.deleteUserById(uid);
+  return result;
+};

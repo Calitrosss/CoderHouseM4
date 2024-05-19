@@ -3,6 +3,7 @@ import {
   patchUserDocumentsService,
   getUsersService,
   deleteUsersService,
+  deleteUserByIdService,
 } from "../services/users.service.js";
 
 import UsersDTO from "../dao/dto/users.dto.js";
@@ -101,7 +102,26 @@ export const deleteUsers = async (req, res, next) => {
         })
       );
 
-    res.send({ status: "success", payload: "Users successfully deleted" });
+    res.send(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteUserById = async (req, res, next) => {
+  try {
+    const { uid } = req.params;
+
+    const result = await deleteUserByIdService(uid);
+    if (result.status === "error")
+      await CustomError.createError({
+        name: "Delete user error",
+        cause: `Error deleteUserById(): ${result.error}`,
+        message: "Error trying to delete user",
+        code: ErrorEnum.NOT_FOUND,
+      });
+
+    res.send(result);
   } catch (error) {
     next(error);
   }

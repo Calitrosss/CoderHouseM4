@@ -79,15 +79,26 @@ export default class UserManager {
       // const inactiveTime = new Date();
       // inactiveTime.setMinutes(inactiveTime.getMinutes() - 30);
 
-      const users = await userModel.find({
+      const usersDeleted = await userModel.find({
         last_connection: { $lte: inactiveTime },
       });
 
-      userModel.deleteMany({
+      const deleteResult = await userModel.deleteMany({
         last_connection: { $lte: inactiveTime },
       });
 
-      return { status: "success", payload: users };
+      return { status: "success", payload: usersDeleted, deletedCount: deleteResult.deletedCount };
+    } catch (error) {
+      return { status: "error", error: `${error}` };
+    }
+  }
+
+  async deleteUserById(uid) {
+    try {
+      const result = await userModel.deleteOne({ _id: uid });
+      if (!result.deletedCount) return { status: "error", error: `User Id "${uid}" Not found` };
+
+      return { status: "success", payload: `Success: User ID "${uid}" deleted` };
     } catch (error) {
       return { status: "error", error: `${error}` };
     }

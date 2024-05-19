@@ -5,6 +5,7 @@ import {
   patchUserDocuments,
   getUsers,
   deleteUsers,
+  deleteUserById,
 } from "../controllers/users.controller.js";
 import { uploader } from "../middlewares/multer.js";
 
@@ -28,5 +29,7 @@ usersRoutes.patch(
 usersRoutes.get("/", authorization("admin"), getUsers);
 
 usersRoutes.delete("/", authorization("admin"), deleteUsers);
+
+usersRoutes.delete("/:uid", authorization("admin"), deleteUserById);
 
 export default usersRoutes;
