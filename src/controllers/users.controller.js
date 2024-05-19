@@ -1,10 +1,16 @@
 import {
   putSwitchUserPremiumRoleService,
   patchUserDocumentsService,
+  getUsersService,
+  deleteUsersService,
 } from "../services/users.service.js";
+
+import UsersDTO from "../dao/dto/users.dto.js";
 
 import CustomError from "../errors/CustomError.js";
 import ErrorEnum from "../errors/ErrorEnum.js";
+
+import { googleSendSimpleMail } from "../utils/mailing.js";
 
 export const putSwitchUserPremiumRole = async (req, res, next) => {
   try {
@@ -61,6 +67,41 @@ export const patchUserDocuments = async (req, res, next) => {
       });
 
     res.send(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUsers = async (req, res, next) => {
+  try {
+    const result = await getUsersService();
+    let users = [];
+
+    if (result) users = result.map((user) => new UsersDTO(user));
+
+    res.send(users);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteUsers = async (req, res, next) => {
+  try {
+    const result = await deleteUsersService();
+
+    if (result.status === "success" && result.payload.length)
+      result.payload.map((user) =>
+        googleSendSimpleMail({
+          from: "eCommerce",
+          to: user.email,
+          subject: "eCommerce - Eliminación de usuario",
+          html: `
+          Estimado ${user.first_name} ${user.last_name}, le informamos que su cuenta ha sido eliminada por inactividad. Saludos cordiales.
+          `,
+        })
+      );
+
+    res.send({ status: "success", payload: "Users successfully deleted" });
   } catch (error) {
     next(error);
   }

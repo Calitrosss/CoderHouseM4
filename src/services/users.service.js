@@ -23,3 +23,13 @@ export const patchUserDocumentsService = async (
   );
   return result;
 };
+
+export const getUsersService = async () => {
+  const result = await usersService.getUsers();
+  return result;
+};
+
+export const deleteUsersService = async () => {
+  const result = await usersService.deleteUsers();
+  return result;
+};

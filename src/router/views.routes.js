@@ -31,13 +31,13 @@ viewsRoutes.get("/login", checkUser, getLogin);
 
 viewsRoutes.get("/register", checkUser, getRegister);
 
-viewsRoutes.get("/failtoregister", getFailRegister);
+viewsRoutes.get("/failtoregister", checkUser, getFailRegister);
 
-viewsRoutes.get("/failtologin", getFailLogin);
+viewsRoutes.get("/failtologin", checkUser, getFailLogin);
 
-viewsRoutes.get("/forgot-pass", getForgotPass);
+viewsRoutes.get("/forgot-pass", checkUser, getForgotPass);
 
-viewsRoutes.get("/reset-pass/:rid", getResetPass);
+viewsRoutes.get("/reset-pass/:rid", checkUser, getResetPass);
 
 viewsRoutes.get("/user-profile/:uid", chekAuth, applyPolicy(["user", "premium"]), getUserProfile);
 

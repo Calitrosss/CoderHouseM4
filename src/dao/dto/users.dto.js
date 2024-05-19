@@ -1,6 +1,6 @@
 export default class UsersDTO {
   constructor(user) {
-    let img_profile = user.documents.find((d) => d.name === "profile");
+    let img_profile = user.documents?.find((d) => d.name === "profile");
     img_profile = img_profile ? img_profile.reference : "";
 
     this.id = user._id;

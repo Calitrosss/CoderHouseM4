@@ -25,7 +25,10 @@ const userSchema = mongoose.Schema({
       },
     ],
   },
-  last_connection: Date,
+  last_connection: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 export const userModel = mongoose.model(userCollection, userSchema);

@@ -68,4 +68,28 @@ export default class UserManager {
       return [];
     }
   }
+
+  async deleteUsers() {
+    try {
+      //** Anterior a 2 días */
+      const inactiveTime = new Date();
+      inactiveTime.setDate(inactiveTime.getDate() - 2);
+
+      //** Anterior a 30 minutos */
+      // const inactiveTime = new Date();
+      // inactiveTime.setMinutes(inactiveTime.getMinutes() - 30);
+
+      const users = await userModel.find({
+        last_connection: { $lte: inactiveTime },
+      });
+
+      userModel.deleteMany({
+        last_connection: { $lte: inactiveTime },
+      });
+
+      return { status: "success", payload: users };
+    } catch (error) {
+      return { status: "error", error: `${error}` };
+    }
+  }
 }

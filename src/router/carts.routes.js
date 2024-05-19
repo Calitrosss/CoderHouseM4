@@ -14,9 +14,9 @@ import {
 
 const cartsRoutes = Router();
 
-cartsRoutes.get("/", getCarts);
+cartsRoutes.get("/", authorization("admin"), getCarts);
 
-cartsRoutes.get("/:cid", getCartProducts);
+cartsRoutes.get("/:cid", applyPolicy(["user", "premium"]), getCartProducts);
 
 cartsRoutes.post("/", applyPolicy(["user", "premium"]), createCart);
 

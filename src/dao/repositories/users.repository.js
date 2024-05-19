@@ -17,6 +17,16 @@ export default class UsersRepository {
       account,
       products
     );
+    return { status: "success", payload: result };
+  };
+
+  getUsers = async () => {
+    const result = await this.dao.getUsers();
+    return result;
+  };
+
+  deleteUsers = async () => {
+    const result = await this.dao.deleteUsers();
     return result;
   };
 }

@@ -1,15 +1,20 @@
 import { Router } from "express";
-import { chekAuth, authorization } from "../middlewares/auth.js";
-import { putSwitchUserPremiumRole, patchUserDocuments } from "../controllers/users.controller.js";
+import { authorization, applyPolicy } from "../middlewares/auth.js";
+import {
+  putSwitchUserPremiumRole,
+  patchUserDocuments,
+  getUsers,
+  deleteUsers,
+} from "../controllers/users.controller.js";
 import { uploader } from "../middlewares/multer.js";
 
 const usersRoutes = Router();
 
-usersRoutes.put("/premium/:uid", chekAuth, authorization("admin"), putSwitchUserPremiumRole);
+usersRoutes.put("/premium/:uid", authorization("admin"), putSwitchUserPremiumRole);
 
 usersRoutes.patch(
   "/:uid/documents",
-  chekAuth,
+  applyPolicy(["user", "premium"]),
   uploader.fields([
     { name: "profile", maxCount: 1 },
     { name: "identity", maxCount: 1 },
@@ -19,5 +24,9 @@ usersRoutes.patch(
   ]),
   patchUserDocuments
 );
+
+usersRoutes.get("/", authorization("admin"), getUsers);
+
+usersRoutes.delete("/", authorization("admin"), deleteUsers);
 
 export default usersRoutes;
