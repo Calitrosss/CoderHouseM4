@@ -1,4 +1,6 @@
 import { productModel } from "../models/product.model.js";
+import { userModel } from "../models/user.model.js";
+import UsersDTO from "../dto/users.dto.js";
 
 export default class ProductManager {
   async getProducts(limit, page, sort, query) {
@@ -119,14 +121,22 @@ export default class ProductManager {
       const product = await productModel.findOne({ _id: id });
       if (!product) return { status: "error", error: `Product Id "${id}" Not found` };
 
+      let user = uid !== "admin" ? new UsersDTO(await userModel.findOne({ _id: uid })) : {};
+      if (!user) return { status: "error", error: `User Id "${uid}" Not found` };
+
       if (role === "premium" && product.owner !== uid.toString())
         return { status: "error", error: `Forbidden. The user is not the owner.` };
 
       const result = await productModel.deleteOne({ _id: id });
-
       if (!result.deletedCount) return { status: "error", error: `Product Id "${id}" Not found` };
 
-      return { status: "success", payload: `Success: Product ID "${id}" deleted` };
+      return {
+        status: "success",
+        payload: {
+          product: { code: product.code, title: product.title },
+          user: { email: user.email, fullName: user.fullName },
+        },
+      };
     } catch (error) {
       return { status: "error", error: `${error}` };
     }

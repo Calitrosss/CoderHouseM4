@@ -10,6 +10,8 @@ import CustomError from "../errors/CustomError.js";
 import { productErrorTypeInfo } from "../errors/ProductErrorInfo.js";
 import ErrorEnum from "../errors/ErrorEnum.js";
 
+import { googleSendSimpleMail } from "../utils/mailing.js";
+
 export const getProducts = async (req, res, next) => {
   try {
     const { limit = 10, page = 1, sort = "", query = "" } = req.query;
@@ -170,6 +172,17 @@ export const deleteProduct = async (req, res, next) => {
         });
       }
     }
+
+    if (result.status === "success" && result.payload.user.email)
+      googleSendSimpleMail({
+        from: "eCommerce",
+        to: result.payload.user.email,
+        subject: "eCommerce - Eliminación de producto",
+        html: `
+        Estimado ${result.payload.user.fullName}, le informamos que el producto ${result.payload.product.title} código ${result.payload.product.code} ha sido eliminado. Saludos cordiales.
+        `,
+      });
+
     res.send(result);
   } catch (error) {
     next(error);

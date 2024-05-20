@@ -138,8 +138,10 @@ const initializePassport = () => {
 
   passport.deserializeUser(async (id, done) => {
     let user = {};
+
     if (id === "adminCoder") {
       user = {
+        _id: "admin",
         first_name: "Admin",
         last_name: "Coder",
         email: "adminCoder@coder.com",
