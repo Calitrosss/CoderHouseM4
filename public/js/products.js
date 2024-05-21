@@ -14,7 +14,7 @@ btnLogout.addEventListener("click", async (e) => {
   window.location.href = redirect;
 });
 
-btnProfile.addEventListener("click", async (e) => {
+btnProfile?.addEventListener("click", async (e) => {
   let current = await getCurrent();
   const { id } = current.user;
 

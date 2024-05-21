@@ -62,7 +62,7 @@ export default class UserManager {
 
   async getUsers() {
     try {
-      const users = await userModel.find();
+      const users = await userModel.find({ role: { $ne: "admin" } });
       return users;
     } catch (error) {
       return [];

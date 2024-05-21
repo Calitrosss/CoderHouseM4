@@ -13,6 +13,7 @@ import {
   getForgotPass,
   getResetPass,
   getUserProfile,
+  getUsers,
 } from "../controllers/views.controller.js";
 
 const viewsRoutes = Router();
@@ -40,5 +41,7 @@ viewsRoutes.get("/forgot-pass", checkUser, getForgotPass);
 viewsRoutes.get("/reset-pass/:rid", checkUser, getResetPass);
 
 viewsRoutes.get("/user-profile/:uid", chekAuth, applyPolicy(["user", "premium"]), getUserProfile);
+
+viewsRoutes.get("/users-administrator", chekAuth, authorization("admin"), getUsers);
 
 export default viewsRoutes;

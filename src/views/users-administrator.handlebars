@@ -1,0 +1,32 @@
+<div>
+  <h1>ADMINISTRAR USUARIOS</h1>
+  <p>
+    <a href="/"><button type="button">Ir a home</button></a>
+    <button id="btnLogout">Cerrar sesión</button>
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>NOMBRE</th>
+        <th>ROL</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each usersList}}
+        <tr>
+          <td>{{this.id}}</td>
+          <td>{{this.fullName}}</td>
+          <td>{{uppercase this.role}}</td>
+          <td><button type="button" class="btnRole">Cambiar Rol</button></td>
+          <td><button type="button" class="btnDelete">Eliminar Usuario</button></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../js/users-administrator.js"></script>

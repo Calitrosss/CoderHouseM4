@@ -1,5 +1,7 @@
 import { getProductsService } from "../services/products.service.js";
 import { getCartProductsService } from "../services/carts.service.js";
+import { getUsersService } from "../services/users.service.js";
+import UsersDTO from "../dao/dto/users.dto.js";
 
 export const getHome = (req, res) => {
   // res.render("home", { title: "Home" });
@@ -61,4 +63,18 @@ export const getResetPass = (req, res) => {
 
 export const getUserProfile = (req, res) => {
   res.render("user-profile", { title: "User Profile" });
+};
+
+export const getUsers = async (req, res) => {
+  try {
+    let usersList = await getUsersService();
+
+    if (usersList.length) usersList = usersList.map((user) => new UsersDTO(user));
+
+    usersList.sort((a, b) => a.fullName.localeCompare(b.fullName));
+
+    res.render("users-administrator", { title: "Users Management", usersList });
+  } catch (error) {
+    req.logger.error(`${new Date().toLocaleString()} => ${error}`);
+  }
 };

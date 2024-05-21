@@ -20,7 +20,7 @@ export const putSwitchUserPremiumRole = async (req, res, next) => {
     const result = await putSwitchUserPremiumRoleService(uid);
     if (result.status === "error")
       await CustomError.createError({
-        name: "Switch user role error",
+        name: req.session.user?.role !== "admin" ? "Change user role error" : `${result.error}`,
         cause: `Error putSwitchUserPremiumRole(): ${result.error}`,
         message: "Error trying switch role to user",
         code: ErrorEnum.FORBIDDEN,
@@ -115,7 +115,7 @@ export const deleteUserById = async (req, res, next) => {
     const result = await deleteUserByIdService(uid);
     if (result.status === "error")
       await CustomError.createError({
-        name: "Delete user error",
+        name: req.session.user?.role !== "admin" ? "Delete user error" : `${result.error}`,
         cause: `Error deleteUserById(): ${result.error}`,
         message: "Error trying to delete user",
         code: ErrorEnum.NOT_FOUND,

@@ -53,6 +53,23 @@ const hbs = handlebars.create({
   runtimeOptions: {
     allowProtoPropertiesByDefault: true,
   },
+  helpers: {
+    uppercase: function (text) {
+      return text.toUpperCase();
+    },
+    ifAdmin: function (role, options) {
+      if (role === "admin") {
+        return options.fn(this);
+      }
+      return options.inverse(this);
+    },
+    ifNotAdmin: function (role, options) {
+      if (role !== "admin") {
+        return options.fn(this);
+      }
+      return options.inverse(this);
+    },
+  },
 });
 app.engine("handlebars", hbs.engine);
 app.set("views", "src/views");
@@ -66,7 +83,7 @@ app.use(
     saveUninitialized: true,
     store: MongoStore.create({
       mongoUrl: connString,
-      ttl: 300,
+      ttl: 3000,
     }),
   })
 );
