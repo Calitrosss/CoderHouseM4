@@ -121,6 +121,16 @@ export const deleteUserById = async (req, res, next) => {
         code: ErrorEnum.NOT_FOUND,
       });
 
+    if (result.user?.email)
+      googleSendSimpleMail({
+        from: "eCommerce",
+        to: result.user?.email,
+        subject: "eCommerce - Eliminación de usuario",
+        html: `
+        Estimado ${result.user?.first_name} ${result.user?.last_name}, le informamos que su cuenta ha sido eliminada. Si tiene dudas por favor puede contactarse con nuestra administración. Saludos cordiales.
+        `,
+      });
+
     res.send(result);
   } catch (error) {
     next(error);

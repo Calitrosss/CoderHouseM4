@@ -32,11 +32,19 @@ async function swicthRole(event) {
       },
     });
 
-    const responseData = await response.json();
+    let responseData;
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      responseData = await response.json();
+    } else {
+      responseData = await response.text();
+    }
+
+    if (!response.ok && !contentType.includes("application/json")) throw new Error(responseData);
 
     if (!response.ok)
       return Swal.fire({
-        title: `${responseData.error ?? "Ocurrió un error al procesar la solicitud."}`,
+        title: `${responseData?.error ?? "Ocurrió un error al procesar la solicitud."}`,
         toast: true,
         position: "top-end",
         icon: "error",
@@ -86,10 +94,15 @@ async function deleteUser(event) {
       },
     });
 
-    const responseData = await response.json();
+    let responseData;
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      responseData = await response.json();
+    } else {
+      responseData = await response.text();
+    }
 
-    console.log("response", response);
-    console.log("responseData", responseData);
+    if (!response.ok && !contentType.includes("application/json")) throw new Error(responseData);
 
     if (!response.ok)
       return Swal.fire({
@@ -120,5 +133,7 @@ async function deleteUser(event) {
       showConfirmButton: false,
       timer: 2500,
     });
+
+    location.reload();
   }
 }

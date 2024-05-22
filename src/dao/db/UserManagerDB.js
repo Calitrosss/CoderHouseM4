@@ -95,10 +95,17 @@ export default class UserManager {
 
   async deleteUserById(uid) {
     try {
+      const user = await userModel.findOne({ _id: uid });
+      if (!user) return { status: "error", error: `User Id "${uid}" Not found` };
+
       const result = await userModel.deleteOne({ _id: uid });
       if (!result.deletedCount) return { status: "error", error: `User Id "${uid}" Not found` };
 
-      return { status: "success", payload: `Success: User ID "${uid}" deleted` };
+      return {
+        status: "success",
+        payload: `Success: User ID "${uid}" deleted`,
+        user: { first_name: user.first_name, last_name: user.last_name, email: user.email },
+      };
     } catch (error) {
       return { status: "error", error: `${error}` };
     }

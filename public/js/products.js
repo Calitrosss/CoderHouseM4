@@ -88,7 +88,7 @@ async function addToCart(event) {
   }
 }
 
-btnCart.addEventListener("click", async (e) => {
+btnCart?.addEventListener("click", async (e) => {
   let current = await getCurrent();
   let cid = current.user.cart;
 
