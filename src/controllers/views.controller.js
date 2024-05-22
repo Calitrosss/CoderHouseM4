@@ -31,7 +31,12 @@ export const getCartProducts = async (req, res) => {
   try {
     const { cid } = req.params;
     const products = await getCartProductsService(cid);
-    res.render("cart", { title: "Cart", products });
+
+    const totalSum = products.reduce((acc, current) => {
+      return acc + current.quantity * current.product.price;
+    }, 0);
+
+    res.render("cart", { title: "Cart", products, totalSum });
   } catch (error) {
     req.logger.error(`${new Date().toLocaleString()} => ${error}`);
   }

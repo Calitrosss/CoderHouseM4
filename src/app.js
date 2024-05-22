@@ -69,6 +69,9 @@ const hbs = handlebars.create({
       }
       return options.inverse(this);
     },
+    getPxQ: function (price, quantity) {
+      return price * quantity;
+    },
   },
 });
 app.engine("handlebars", hbs.engine);
@@ -83,7 +86,7 @@ app.use(
     saveUninitialized: true,
     store: MongoStore.create({
       mongoUrl: connString,
-      ttl: 3000,
+      ttl: 300,
     }),
   })
 );

@@ -176,7 +176,21 @@ export default class CartManager {
           itemsPurchased++;
 
           amount += cartProduct.quantity * cartProduct.product.price;
+        }
+      });
 
+      let ticket = {};
+      if (itemsPurchased > 0) {
+        const newTicket = {
+          code: generateCode(),
+          amount,
+          purchaser,
+        };
+        ticket = await ticketModel.create(newTicket);
+      }
+
+      cartProducts.forEach(async (cartProduct) => {
+        if (cartProduct.product.stock >= cartProduct.quantity) {
           cart.products = cart.products.filter(
             (p) => p.product.toString() !== cartProduct.product._id.toString()
           );
@@ -186,15 +200,7 @@ export default class CartManager {
           await product.save();
         }
       });
-
-      let ticket = {};
-      if (itemsPurchased > 0) {
-        await cart.save();
-        ticket = await ticketModel.create({
-          amount,
-          purchaser,
-        });
-      }
+      await cart.save();
 
       return { status: "success", payload: { cart, ticket } };
     } catch (error) {
@@ -202,3 +208,10 @@ export default class CartManager {
     }
   }
 }
+
+const generateCode = () => {
+  const pre = Math.random().toString(36).substring(7);
+  const cod1 = (Date.now() + Math.floor(Math.random() * 10000 + 1)).toString(36);
+  const cod2 = (Date.now() + Math.floor(Math.random() * 10000 + 1)).toString(36);
+  return `${pre}${cod1}${cod2}`;
+};

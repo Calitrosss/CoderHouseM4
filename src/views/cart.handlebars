@@ -1,8 +1,43 @@
 <div>
   <h1>CARRITO</h1>
-  <ul>
-    {{#each products}}
-      <li>{{this.product._id}} - {{this.product.title}} ({{this.product.code}}) - {{this.quantity}}
-    {{/each}}
-  </ul>
+  <p>
+    <a href="/products"><button type="button">Regresar a productos</button></a>
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>ITEM</th>
+        <th>COD</th>
+        <th>CANTIDAD</th>
+        <th>PRECIO</th>
+        <th>SUBTOTAL</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+        <tr>
+          <td>{{this.product._id}}</td>
+          <td>{{this.product.title}}</td>
+          <td>{{this.product.code}}</td>
+          <td>{{this.quantity}}</td>
+          <td>{{this.product.price}}</td>
+          <td>{{getPxQ this.product.price this.quantity}}</td>
+        </tr>
+      {{/each}}
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><b>{{this.totalSum}}</b></td>
+      </tr>
+    </tbody>
+  </table>
 </div>
+<br />
+<button id="btnBuy">Finalizar compra</button>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/cart.js"></script>

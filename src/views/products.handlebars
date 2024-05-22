@@ -1,5 +1,8 @@
 <div>
   <h1>PRODUCTOS</h1>
+  {{#ifNotAdmin user.role}}
+    <button id="btnCart">Ver carrito</button>
+  {{/ifNotAdmin}}
   <h2>Bienvenido {{user.first_name}} {{user.last_name}} "{{user.email}}" ({{user.role}})</h2>
   <p>
     {{#ifAdmin user.role}}
@@ -10,27 +13,41 @@
     {{/ifNotAdmin}}
     <button id="btnLogout">Cerrar sesión</button>
   </p>
-  <ul>
-    {{#each productsList.payload}}
-      <li>{{this.id}}
-        -
-        {{this.title}}
-        ({{this.code}}) |
-        <button>Ver detalle</button>
-        |
-        <button>Agregar al carrito</button>
-        |</li>
-    {{/each}}
-  </ul>
-  <br />
-  <span>Página {{productsList.page}}/{{productsList.totalPages}}</span>
-  {{#if productsList.hasPrevPage}}
-    <button><a href={{productsList.prevLink}}>Anterior</a></button>
-  {{/if}}
-  {{#if productsList.hasNextPage}}
-    <button><a href={{productsList.nextLink}}>Siguiente</a></button>
-  {{/if}}
-
+  {{#ifNotAdmin user.role}}
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>ITEM</th>
+          <th>COD</th>
+          <th>PRECIO</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each productsList.payload}}
+          <tr>
+            <td>{{this.id}}</td>
+            <td>{{this.title}}</td>
+            <td>{{this.code}}</td>
+            <td>{{this.price}}</td>
+            <td><button type="button" class="btnDetail">Ver detalle</button></td>
+            <td><button type="button" class="btnAddToCart">Agregar al carrito</button></td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <br />
+    <span>Página {{productsList.page}}/{{productsList.totalPages}}</span>
+    {{#if productsList.hasPrevPage}}
+      <button><a href={{productsList.prevLink}}>Anterior</a></button>
+    {{/if}}
+    {{#if productsList.hasNextPage}}
+      <button><a href={{productsList.nextLink}}>Siguiente</a></button>
+    {{/if}}
+  {{/ifNotAdmin}}
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/products.js"></script>
