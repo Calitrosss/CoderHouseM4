@@ -25,7 +25,7 @@
 ```env
 ENVIRONMENT=(production ó development)
 PORT=(8080)
-DOMAIN=(http://localhost)
+DOMAIN=(http://localhost:8080)
 MONGO_URL=
 SECRET_KEY=
 ADMIN_EMAIL=

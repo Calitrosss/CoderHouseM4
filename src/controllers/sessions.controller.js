@@ -6,7 +6,7 @@ import { resetLinksModel } from "../dao/models/resetlinks.model.js";
 import { createHash, isValidPassword } from "../utils/bcrypt.js";
 
 import { getVariables } from "../config/dotenv.config.js";
-const { port, domain } = getVariables();
+const { domain } = getVariables();
 
 export const postRegister = (req, res) => {
   res.redirect("/login");
@@ -75,7 +75,7 @@ export const sendResetPassLink = async (req, res) => {
 
     const resetId = await resetLinksModel.create({ email });
 
-    const resetLink = `${domain}:${port}/reset-pass/${resetId._id.toString()}`;
+    const resetLink = `${domain}/reset-pass/${resetId._id.toString()}`;
 
     await googleSendSimpleMail({
       from: "eCommerce",
