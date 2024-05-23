@@ -1,4 +1,4 @@
-# Desafío clase 44
+# Entrega Final
 
 ## Instalación y configuración
 
@@ -39,11 +39,23 @@ GOOGLE_APP_PASS=
 
 ## Aspectos incluídos
 
-- Nuevas propiedades al modelo Users:
-  - **_documents_**: arreglo para almacenar archivos
-  - **_last_connection_**: última fecha de login/logout
-- Nueva ruta y vista para cargar documentos al usuario:
-  - Vista: **_/user-profile/:uid_**
-  - Ruta: **_/api/users/:uid/documents_**
-- Ruta para cambiar el rol de un usuario entre "user" y "premium" y viceversa, valida si el usuario ya tiene cargado documentos de identidad, residencia y cuenta banccaria para poder pasar a premium:
-  - **_/api/users/premium/:uid_**
+- Nuevas rutas para obtener listado de usuarios y limpiiar todos los usuarios que no hayan tenido conexión en los últimos 2 días, los usuario eliminados recibirán un email (**_solo accesibles por el administrador_**):
+
+  - Ruta GET: **_/api/users_**
+  - Ruta DELETE: **_/api/users_**
+
+- Nueva ruta y vista para mostrar listado de usuarios y permite cambiar rol y eliminiar usuario, el usuario eliminados recibirán un email (**_solo accesible por el administrado_**):
+
+  - Vista: **_/users-administrator_**
+  - Ruta DELETE: **_/api/users/:uid_**
+
+- Modificación de endpoint que elimina productos, en caso de que el producto pertenezca a un usuario premium, le envíe un correo indicándole que el producto fue eliminado.
+
+  - Ruta DELETE: **_/api/products/:pid_**
+
+- Se modifica vista de productos para agregar funcionalidad al botón de agregar al carrito, mostrar el botón de ir a listado de usuarios en caso de usuario administrador y el botón ir a perfil de usuario en caso de usuario no administrador:
+
+  - Vista: **_/products_**
+
+- Se agrega vista para mostrar carrito y terminar el flujo de compra mostrando el ticket geenerado
+  - Vista: **_//carts/:cid_**
