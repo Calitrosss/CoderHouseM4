@@ -58,4 +58,4 @@ GOOGLE_APP_PASS=
   - Vista: **_/products_**
 
 - Se agrega vista para mostrar carrito y terminar el flujo de compra mostrando el ticket geenerado
-  - Vista: **_//carts/:cid_**
+  - Vista: **_/carts/:cid_**
